@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class CardsCaculation : MonoBehaviour
 {
-    List<float> playerCards = new List<float>();
-    List<float> bankerCards = new List<float>();
-
+   
     bool Player = false;
     int counter ;
     Vector2 startPos;
@@ -19,14 +17,12 @@ public class CardsCaculation : MonoBehaviour
         startPos = m_rect.anchoredPosition;
     }
 
-    // Start is called before the first frame update
     void Start()
     {
-        counter = CardInstantiate.Instance.counter;
+        counter = CardsManager.Instance.counter;
         StartCoroutine(Animate());
     }
 
-    // Update is called once per frame
     void Update()
     {
         
@@ -37,25 +33,25 @@ public class CardsCaculation : MonoBehaviour
     {
         switch(counter)
         {
-            case 0:
+            case 1:
                 targetPos = new Vector2(1000, 550);
                 break;
-            case 1:
+            case 2:
                 targetPos = new Vector2(500, 550);
                 break;
-            case 2:
+            case 3:
                 targetPos = new Vector2(1100, 550);
                 break;
 
-            case 3:
+            case 4:
                 targetPos = new Vector2(400, 550);
                 break;
-            case 4:
+            case 5:
                 Player = true;
                 targetPos = new Vector2(1221, 540);
                 break;
 
-            case 5:
+            case 6:
                 Player = false;
                 targetPos = new Vector2(278, 540);
                 break;
@@ -80,27 +76,32 @@ public class CardsCaculation : MonoBehaviour
     {
         float t = 0;
         float z = 0f;
-        if(Player && counter == 4)
+        if(Player && counter == 5)
         {
-            //Debug.Log("COUNTER 4");
-            while(t<1f)
-            {
-                z = -90;
-                t += Time.deltaTime;
-                m_rect.transform.rotation = Quaternion.Lerp(Quaternion.identity, Quaternion.Euler(0, 0, z), t);
-                yield return new WaitForEndOfFrame();
-            }
+                yield return new WaitForSeconds(1f);
+                
+                while (t < 1f)
+                {
+                    z = -90;
+                    t += Time.deltaTime;
+                    m_rect.transform.rotation = Quaternion.Lerp(Quaternion.identity, Quaternion.Euler(0, 0, z), t);
+                    yield return new WaitForEndOfFrame();
+                }
+                m_rect.transform.rotation = Quaternion.Euler(0, 180, z);
             
-        } else if (!Player && counter == 5)
+        } else if (!Player && counter == 6)
         {
-            //Debug.Log("COUNTER 5");
-            while(t<1f)
-            {
-                z = 90;
-                t += Time.deltaTime;
-                m_rect.transform.rotation = Quaternion.Lerp(Quaternion.identity, Quaternion.Euler(0, 0, z), t);
-                yield return new WaitForEndOfFrame();
-            }
+                Debug.Log("LEE");
+                yield return new WaitForSeconds(1f);
+                while (t < 1f)
+                {
+                    z = 90;
+                    t += Time.deltaTime;
+                    m_rect.transform.rotation = Quaternion.Lerp(Quaternion.identity, Quaternion.Euler(0, 0, z), t);
+                    yield return new WaitForEndOfFrame();
+               }
+            m_rect.transform.rotation = Quaternion.Euler(0, 180, z);
+
         } else
         {
             while (t < 1f)
@@ -109,9 +110,10 @@ public class CardsCaculation : MonoBehaviour
                 m_rect.transform.rotation = Quaternion.Lerp(Quaternion.identity, Quaternion.Euler(0, 180, 0), t);
                 yield return new WaitForEndOfFrame();
             }
+            m_rect.transform.rotation = Quaternion.Euler(0, 180, z);
         }
         
-        m_rect.transform.rotation = Quaternion.Euler(0, 180, z);
+       // m_rect.transform.rotation = Quaternion.Euler(0, 180, z);
     }
 
     
