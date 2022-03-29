@@ -33,6 +33,12 @@ public class CardsCaculation : MonoBehaviour
     {
         switch(counter)
         {
+            case -2:
+                targetPos = new Vector2(278, 540);
+                break;
+            case -1:
+                targetPos = new Vector2(1221, 540);
+                break;
             case 1:
                 targetPos = new Vector2(1000, 550);
                 break;
@@ -46,25 +52,25 @@ public class CardsCaculation : MonoBehaviour
             case 4:
                 targetPos = new Vector2(400, 550);
                 break;
-            case 5:
-                Player = true;
-                targetPos = new Vector2(1221, 540);
-                break;
+            //case 5:
+            //    Player = true;
+            //    targetPos = new Vector2(1221, 540);
+            //    break;
 
-            case 6:
-                Player = false;
-                targetPos = new Vector2(278, 540);
-                break;
+            //case 6:
+            //    Player = false;
+            //    targetPos = new Vector2(278, 540);
+            //    break;
             default:
                 break;
         }
         
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         float t = 0;
        
         while (t < 1f)
         {
-            t += Time.deltaTime;
+            t += Time.deltaTime * 5;
             m_rect.anchoredPosition = Vector2.Lerp(startPos, targetPos, t);
             yield return new WaitForEndOfFrame();
         }
@@ -76,7 +82,7 @@ public class CardsCaculation : MonoBehaviour
     {
         float t = 0;
         float z = 0f;
-        if(Player && counter == 5)
+        if(Player && counter == 5 || counter == -1)
         {
                 yield return new WaitForSeconds(1f);
                 
@@ -89,9 +95,8 @@ public class CardsCaculation : MonoBehaviour
                 }
                 m_rect.transform.rotation = Quaternion.Euler(0, 180, z);
             
-        } else if (!Player && counter == 6)
+        } else if (!Player && counter == 6 || counter == -2)
         {
-                Debug.Log("LEE");
                 yield return new WaitForSeconds(1f);
                 while (t < 1f)
                 {

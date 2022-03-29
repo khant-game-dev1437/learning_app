@@ -2837,9 +2837,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9735d14f754649a4ebb4d8c97b29b1a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Card: {fileID: 8439382002872666745, guid: f730bc3991d7aef4c972263625c68823, type: 3}
   cardParent: {fileID: 984010757}
   counter: 0
-  Card: {fileID: 8439382002872666745, guid: f730bc3991d7aef4c972263625c68823, type: 3}
+  Player: 
+  Banker: 
 --- !u!1 &998493173
 GameObject:
   m_ObjectHideFlags: 0

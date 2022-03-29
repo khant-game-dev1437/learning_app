@@ -2,28 +2,35 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class CardsManager : MonoBehaviour
 {
     public static CardsManager Instance { get; private set; }
-   
-    public Transform cardParent;
-  
-    public int counter = 0;
-    private int randomNo = 0;
-    private string cardName = string.Empty;
-    int count = 0;
 
-    private bool isPlayer = true;
-    private bool onceCheck = false;
     public GameObject Card;
+    public Transform cardParent;
+    
     private Sprite[] LoadSprites;
 
+    private string cardName = string.Empty;
+    private string winnerName = string.Empty;
+
+    private bool isBankerDraw = false;
+    private bool isPlayerDraw = false;
+    private bool isPlayer = true;
+
+    private int count = 0;
     private int playerTotal;
     private int playerThirdCard;
-
     private int bankerTotal;
     private int bankerThirdCard;
+    private int randomNo = 0;
+    public int counter = 0;
+    public bool player3rdCounter = false;
+    public bool banker3rdCounter = false;
+
+    public int practice = 0;
 
     List<int> CardsList = new List<int>();
     List<string> Card1 = new List<string>();
@@ -55,10 +62,11 @@ public class CardsManager : MonoBehaviour
 
     void Start()
     {
+
         LoadAllResources();
         CardsAddToList();
         CardsMatchWithSprites();
-        InvokeRepeating("createCards", 0.5f, 0.5f);
+        InvokeRepeating("CreateCards", 0.5f, 0.5f);
     }
 
     // Update is called once per frame
@@ -160,7 +168,7 @@ public class CardsManager : MonoBehaviour
 
     private void ChooseCards(int CardNo)
     {
-        
+
         switch (CardNo)
         {
             case 1:
@@ -207,7 +215,7 @@ public class CardsManager : MonoBehaviour
             default:
                 break;
         }
-        
+
     }
 
     private void LoadAllResources()
@@ -215,14 +223,15 @@ public class CardsManager : MonoBehaviour
         LoadSprites = Resources.LoadAll<Sprite>("Graphic/Graphic/PlayingCard");
     }
 
-    public void createCards()
+    public void CreateCards()
     {
         int matchCardNo = Random.Range(1, 10);
         if (!isPlayer && counter != 4)
         {
             Banker.Add(matchCardNo);
             isPlayer = true;
-        } else if (isPlayer && counter != 4)
+        }
+        else if (isPlayer && counter != 4)
         {
             Player.Add(matchCardNo);
             isPlayer = false;
@@ -230,11 +239,24 @@ public class CardsManager : MonoBehaviour
         //Cards Limitation
         if (counter == 4)
         {
+            playerTotal = getPlayerData();
+            bankerTotal = getBankerData();
+
             CaculatePlayerData();
+            if (isPlayerDraw)
+            {
+                counter = -1;
+            }
+            else if (isBankerDraw)
+            {
+                counter = -2;
+            }
+
+            CancelInvoke();
             return;
         }
         GameObject go = Instantiate(Card, cardParent);
-        
+
         //Debug.Log("CARDNO " + matchCardNo);
         ChooseCards(matchCardNo);
         RemoveCardNumberFromMainList(matchCardNo);
@@ -250,88 +272,208 @@ public class CardsManager : MonoBehaviour
         counter++;
     }
 
+
     public void RemoveCardNumberFromMainList(int cardNo)
     {
-        for(int i = 0; i < CardsList.Count; i++)
+        for (int i = 0; i < CardsList.Count; i++)
         {
-            if(CardsList[i] == cardNo)
+            if (CardsList[i] == cardNo)
             {
-                CardsList.RemoveAt(i+1);
+                CardsList.RemoveAt(i + 1);
                 return;
             }
         }
     }
 
+    public int DrawACard()
+    {
+        int cardNo = GetCardNumber();
+        RemoveCardNumberFromMainList(cardNo);
+        return cardNo;
+    }
+
     public void DrawPlayerThirdCard()
     {
-        Debug.Log("DRAW PLAYER THIRD CARD");
-        int cardNo = GetCardNumber();
+        int cardNo = DrawACard();
+        Debug.Log("BeforePlayerTotal" + playerTotal);
+        Debug.Log("CardNo" + cardNo);
+        playerTotal += cardNo;
+        Debug.Log("AfterPlayerTotal" + playerTotal);
         playerThirdCard = cardNo;
-
-        RemoveCardNumberFromMainList(cardNo);
+        Debug.Log("PLayerThirdCard" + playerThirdCard);
+        isPlayerDraw = true;
+        createPlayerThirdCard();
     }
+
+    public void DrawBankerThirdCard()
+    {
+        int cardNo = DrawACard();
+        Debug.Log("BeforeBankerTotal" + bankerTotal);
+        Debug.Log("CardNo" + cardNo);
+        bankerTotal += cardNo;
+        Debug.Log("AfterBankerTotal" + bankerTotal);
+        bankerThirdCard = cardNo;
+        Debug.Log("BankerThirdCard" + bankerThirdCard);
+        isBankerDraw = true;
+        createBankerThirdCard();
+    }
+
     public void CaculatePlayerData()
     {
-        if(playerTotal < 10)
+        Debug.Log("PlayerTotal " + playerTotal);
+        Debug.Log("BankerTotal " + bankerTotal);
+        checkOver10();
+        if (playerTotal == 8 || playerTotal == 9 || bankerTotal == 8 || bankerTotal == 9)
         {
-            // နောက်ဆုံးအလုံးကိုယူရမယ်
-
-        }
-        Debug.Log("CACULATE PLAYER DATA");   
-        if(playerTotal == 8 || playerTotal == 9)
-        {
-            if(bankerTotal > playerTotal)
+            Debug.Log("Natural");
+            if (playerTotal > bankerTotal)
             {
-                WinnerName("Banker");
-            } else if (playerTotal == bankerTotal)
+                WinnerName("Player Wins Natural");
+                //return;
+            }
+            else if (playerTotal < bankerTotal)
+            {
+                WinnerName("Banker Wins Natural");
+
+            }
+            else
             {
                 Tie();
-            } else if(bankerTotal < playerTotal)
-            {
-                WinnerName("Player");
             }
         }
-        else if (playerTotal <= 5) // HAVE AN ERROR
+        checkOver10();
+        //For Player Stands and Banker < 6
+        if (playerTotal >= 6 && playerTotal <= 7)
         {
-            Debug.Log("LESS THAN 5");
+            Debug.Log("PlayerTotal playerTotal >= 6 && playerTotal <= 7");
+            if (bankerTotal < 6)
+            {
+                DrawBankerThirdCard();
+                //createBankerThirdCard();
+                Debug.Log("Banker Draw a card " + bankerThirdCard + "  Banker Total:  " + bankerTotal);
+
+                checkOver10();
+                if (bankerTotal > playerTotal)
+                {
+                    WinnerName("Banker");
+                }
+                else if (bankerTotal < playerTotal)
+                {
+                    WinnerName("Player");
+                }
+                else
+                {
+                    Tie();
+                }
+            }
+            else if (bankerTotal == 6 || bankerTotal == 7)
+            {
+                checkOver10();
+                if (bankerTotal > playerTotal)
+                {
+                    WinnerName("Winner = bankerTotal == 6 || bankerTotal ==7");
+                }
+                else if (bankerTotal < playerTotal)
+                {
+                    WinnerName("Player = bankerTotal == 6 || bankerTotal ==7 ");
+                }
+                else
+                {
+                    Tie();
+                }
+            }
+        } //Player is < 6 and check Banker checks Player 3rd card
+        else if (playerTotal >= 0 && playerTotal < 6)
+        {
+            checkOver10();
             DrawPlayerThirdCard();
-            int playerData = getPlayerData();
-            playerData += playerThirdCard;
-            playerTotal = playerData;
-            onceCheck = true;
+            //createPlayerThirdCard();
+            checkOver10();
+            Debug.Log("Player Draw a card " + playerThirdCard + "  Player Total:  " + playerTotal);
+
+            isBankerDraw = checkBankerDraw(bankerTotal, playerThirdCard);
+            if (isBankerDraw)
+            {
+                DrawBankerThirdCard();
+                Debug.Log("IS BANKER DRAW " + isBankerDraw + "   BankerThirdCard :: " + bankerThirdCard);
+
+                checkOver10();
+                if (bankerTotal > playerTotal)
+                {
+                    WinnerName("Banker isBankerDraw true");
+                }
+                else if (bankerTotal < playerTotal)
+                {
+                    WinnerName("Player isBankerDraw true");
+                }
+                else
+                {
+                    Tie();
+                }
+            }
+            else
+            {
+                if (bankerTotal > playerTotal)
+                {
+                    WinnerName("Banker isBankerDraw false");
+                }
+                else if (bankerTotal < playerTotal)
+                {
+                    WinnerName("Player isBankerDraw false");
+                }
+                else
+                {
+                    Tie();
+                }
+            }
+
         }
-        else if (playerTotal > bankerTotal)
-        {
-            Debug.Log("playerTotal" + getPlayerData());
-            Debug.Log("bankerTotal" + getBankerData());
-            WinnerName("Player");
-        }
-        else if (playerTotal < bankerTotal)
-        {
-            Debug.Log("playerTotal" + getPlayerData());
-            Debug.Log("bankerTotal" + getBankerData());
-            WinnerName("Banker");
-        }
-        else if (onceCheck == true)
-        {
-            Debug.Log("One Check True");
-            return;
-        }
+        return;
     }
 
+    public void checkOver10()
+    {
+        if (playerTotal >= 10)
+        {
+            playerTotal -= 10;
+        }
+        else if (playerTotal > 20)
+        {
+            playerTotal -= 20;
+        }
+
+        if (bankerTotal >= 10)
+        {
+            bankerTotal -= 10;
+        }
+        else if (bankerTotal > 20)
+        {
+            bankerTotal -= 20;
+        }
+    }
     public void WinnerName(string winner)
     {
+        if(practice > 10)
+        {
+            //Pass
+        } else if(practice < 10)
+        {
+            //Try Again
+        }
+        winnerName = winner;
         Debug.Log("WINNER : " + winner);
+        return;
     }
 
     public void Tie()
     {
         Debug.Log("IT's A TIE:::::::::");
+        return;
     }
 
     public int getPlayerData()
     {
-        playerTotal = 0;
+        //playerTotal = 0;
 
         for (int i = 0; i < Player.Count; i++)
         {
@@ -342,12 +484,126 @@ public class CardsManager : MonoBehaviour
 
     public int getBankerData()
     {
-        bankerTotal = 0;
+        //bankerTotal = 0;
 
         for (int i = 0; i < Banker.Count; i++)
         {
             bankerTotal += Banker[i];
         }
         return bankerTotal;
+    }
+
+    public bool checkBankerDraw(int bankerPoints, int player3rdCard)
+    {
+        switch (bankerPoints)
+        {
+            case 0:
+            case 1:
+            case 2:
+                return true;                // The banker always draws a card if their points are less than 3
+            case 3:
+                if (player3rdCard != 8)
+                {
+                    return true;                // Draws a card if the player does not draw an 8
+                }
+                break;
+            case 4:
+                if (player3rdCard >= 2 && player3rdCard <= 7)
+                {       // Draws a card if the player draws cards 2-7
+                    return true;
+                }
+                break;
+            case 5:
+                if (player3rdCard >= 4 && player3rdCard <= 7)
+                {       // Draws a card if the player draws cards 4-7
+                    return true;
+                }
+                break;
+            case 6:
+            case 7:
+                if (player3rdCard >= 6 && player3rdCard <= 7)
+                {
+                    Debug.Log("Case 6 and 7 : false ");
+                    return false;
+                }
+                break;
+
+        }
+        return true;
+    }
+
+    public void createPlayerThirdCard()
+    {
+        if (isPlayerDraw)
+        {
+            Debug.Log("PlayerDraw");
+            GameObject go = Instantiate(Card, cardParent);
+            ChooseCards(playerThirdCard);
+            RemoveCardNumberFromMainList(playerThirdCard);
+            Image img = go.transform.GetChild(0).GetComponent<Image>();
+            for (int i = 0; i < LoadSprites.Length; i++)
+            {
+                if (LoadSprites[i].name == cardName)
+                {
+                    img.sprite = LoadSprites[i];
+                }
+            }
+        }
+    }
+
+    public void createBankerThirdCard()
+    {
+        if (isBankerDraw)
+        {
+            Debug.Log("BankerDraw");
+            GameObject go = Instantiate(Card, cardParent);
+            ChooseCards(playerThirdCard);
+            RemoveCardNumberFromMainList(playerThirdCard);
+            Image img = go.transform.GetChild(0).GetComponent<Image>();
+            for (int i = 0; i < LoadSprites.Length; i++)
+            {
+                if (LoadSprites[i].name == cardName)
+                {
+                    img.sprite = LoadSprites[i];
+                }
+            }
+        }
+    }
+
+    public void NextGame()
+    {
+        CancelInvoke();
+        count = 0;
+        Player = new List<int>();
+        Banker = new List<int>();
+
+        foreach (Transform eachChild in cardParent)
+        {
+            if (eachChild.name == "RealCard(Clone)")
+            {
+                Destroy(eachChild.gameObject);
+            }
+        }
+
+
+        cardName = string.Empty;
+        winnerName = string.Empty;
+
+        isBankerDraw = false;
+        isPlayerDraw = false;
+        isPlayer = true;
+
+        playerTotal = 0;
+        playerThirdCard = 0;
+        bankerTotal = 0;
+        bankerThirdCard = 0;
+        randomNo = 0;
+        counter = 0;
+        player3rdCounter = false;
+        banker3rdCounter = false;
+
+        CardsAddToList();
+        CardsMatchWithSprites();
+        InvokeRepeating("CreateCards", 0.5f, 0.5f);
     }
 }
