@@ -13,6 +13,9 @@ public class UIManager : MonoBehaviour
     public GameObject Register;
     public InputField Name_Input;
     public Button Name_Btn;
+    public Button btnBankerThird;
+    public Button btnPlayerThird;
+    public Button btnNextGame;
     public Text Name_Txt;
 
     // MainMenu GameObject
@@ -38,7 +41,11 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
+        btnBankerThird.gameObject.SetActive(false);
+        btnPlayerThird.gameObject.SetActive(false);
+        btnNextGame.gameObject.SetActive(false);
         MainMenu.SetActive(false);
+        StartCoroutine(ActiveCardButtons());
     }
 
     // Update is called once per frame
@@ -76,5 +83,29 @@ public class UIManager : MonoBehaviour
         Cards.SetActive(false);
         Chips.SetActive(false);
         MenuCategories.SetActive(false);
+    }
+
+    public void CloseBankerThirdButton()
+    {
+        btnBankerThird.interactable = false;
+    }
+
+    public void ClosePlayerThirdButton()
+    {
+        btnPlayerThird.interactable = false;
+    }
+
+    public void CloseBtnsInNextGame()
+    {
+        btnBankerThird.gameObject.SetActive(false);
+        btnPlayerThird.gameObject.SetActive(false);
+        btnNextGame.gameObject.SetActive(false);
+    }
+    public IEnumerator ActiveCardButtons()
+    {
+        yield return new WaitForSeconds(4f);
+        btnBankerThird.gameObject.SetActive(true);
+        btnPlayerThird.gameObject.SetActive(true);
+        btnNextGame.gameObject.SetActive(true);
     }
 }

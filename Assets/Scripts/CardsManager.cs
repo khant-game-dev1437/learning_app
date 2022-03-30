@@ -8,6 +8,14 @@ public class CardsManager : MonoBehaviour
 {
     public static CardsManager Instance { get; private set; }
 
+    Vector2 playerStartPos;
+    Vector2 playerTargetPos;
+    private RectTransform player_rect;
+
+    Vector2 bankerStartPos;
+    Vector2 bankerTargetPos;
+    private RectTransform banker_rect;
+
     public GameObject Card;
     public Transform cardParent;
     
@@ -26,7 +34,10 @@ public class CardsManager : MonoBehaviour
     private int bankerTotal;
     private int bankerThirdCard;
     private int randomNo = 0;
+
     public int counter = 0;
+    public int bankerCounter = 0;
+
     public bool player3rdCounter = false;
     public bool banker3rdCounter = false;
 
@@ -225,7 +236,18 @@ public class CardsManager : MonoBehaviour
 
     public void CreateCards()
     {
-        int matchCardNo = Random.Range(1, 10);
+        if (counter == 4)
+        {
+            playerTotal = getPlayerData();
+            bankerTotal = getBankerData();
+
+            Debug.Log("CounterValue " + counter);
+            CaculatePlayerData();
+            CancelInvoke();
+            counter = 0;
+            return;
+        }
+        int matchCardNo = Random.Range(0, 9);
         if (!isPlayer && counter != 4)
         {
             Banker.Add(matchCardNo);
@@ -237,27 +259,9 @@ public class CardsManager : MonoBehaviour
             isPlayer = false;
         }
         //Cards Limitation
-        if (counter == 4)
-        {
-            playerTotal = getPlayerData();
-            bankerTotal = getBankerData();
-
-            CaculatePlayerData();
-            if (isPlayerDraw)
-            {
-                counter = -1;
-            }
-            else if (isBankerDraw)
-            {
-                counter = -2;
-            }
-
-            CancelInvoke();
-            return;
-        }
+        
         GameObject go = Instantiate(Card, cardParent);
 
-        //Debug.Log("CARDNO " + matchCardNo);
         ChooseCards(matchCardNo);
         RemoveCardNumberFromMainList(matchCardNo);
         Image img = go.transform.GetChild(0).GetComponent<Image>();
@@ -268,18 +272,18 @@ public class CardsManager : MonoBehaviour
                 img.sprite = LoadSprites[i];
             }
         }
-        go.transform.localPosition = new Vector2(0, -50);
+        //go.transform.localPosition = new Vector2(0, -50);
         counter++;
     }
 
 
     public void RemoveCardNumberFromMainList(int cardNo)
     {
-        for (int i = 0; i < CardsList.Count; i++)
+        for (int i = 0; i < CardsList.Count-1; i++)
         {
             if (CardsList[i] == cardNo)
             {
-                CardsList.RemoveAt(i + 1);
+                CardsList.RemoveAt(i);
                 return;
             }
         }
@@ -302,7 +306,7 @@ public class CardsManager : MonoBehaviour
         playerThirdCard = cardNo;
         Debug.Log("PLayerThirdCard" + playerThirdCard);
         isPlayerDraw = true;
-        createPlayerThirdCard();
+        //createPlayerThirdCard();
     }
 
     public void DrawBankerThirdCard()
@@ -315,7 +319,7 @@ public class CardsManager : MonoBehaviour
         bankerThirdCard = cardNo;
         Debug.Log("BankerThirdCard" + bankerThirdCard);
         isBankerDraw = true;
-        createBankerThirdCard();
+        //createBankerThirdCard();
     }
 
     public void CaculatePlayerData()
@@ -453,15 +457,8 @@ public class CardsManager : MonoBehaviour
     }
     public void WinnerName(string winner)
     {
-        if(practice > 10)
-        {
-            //Pass
-        } else if(practice < 10)
-        {
-            //Try Again
-        }
         winnerName = winner;
-        Debug.Log("WINNER : " + winner);
+        Debug.Log("WINNER : " + winnerName);
         return;
     }
 
@@ -534,6 +531,7 @@ public class CardsManager : MonoBehaviour
 
     public void createPlayerThirdCard()
     {
+        UIManager.Instance.ClosePlayerThirdButton();
         if (isPlayerDraw)
         {
             Debug.Log("PlayerDraw");
@@ -548,17 +546,26 @@ public class CardsManager : MonoBehaviour
                     img.sprite = LoadSprites[i];
                 }
             }
+            Destroy(go.GetComponent<CardsCaculation>());
+            player_rect = go.GetComponent<RectTransform>();
+            playerStartPos = player_rect.anchoredPosition;
+            playerTargetPos = new Vector2(1221, 540);
+           StartCoroutine(movePlayerThirdCard());            //go.transform.localPosition = new Vector2(1221, 540);
+        } else
+        {
+            Debug.Log("WRONG PLAYER DRAW");
         }
     }
 
     public void createBankerThirdCard()
     {
+        UIManager.Instance.CloseBankerThirdButton();
         if (isBankerDraw)
         {
             Debug.Log("BankerDraw");
             GameObject go = Instantiate(Card, cardParent);
-            ChooseCards(playerThirdCard);
-            RemoveCardNumberFromMainList(playerThirdCard);
+            ChooseCards(bankerThirdCard);
+            RemoveCardNumberFromMainList(bankerThirdCard);
             Image img = go.transform.GetChild(0).GetComponent<Image>();
             for (int i = 0; i < LoadSprites.Length; i++)
             {
@@ -567,12 +574,23 @@ public class CardsManager : MonoBehaviour
                     img.sprite = LoadSprites[i];
                 }
             }
+            Destroy(go.GetComponent<CardsCaculation>());
+            banker_rect = go.GetComponent<RectTransform>();
+            bankerStartPos = banker_rect.anchoredPosition;
+            bankerTargetPos = new Vector2(278, 540);
+           StartCoroutine(moveBankerThirdCard());
+        }
+        else
+        {
+            Debug.Log("WRONG Banker DRAW");
         }
     }
 
     public void NextGame()
     {
         CancelInvoke();
+        UIManager.Instance.CloseBtnsInNextGame();
+        StartCoroutine(UIManager.Instance.ActiveCardButtons());
         count = 0;
         Player = new List<int>();
         Banker = new List<int>();
@@ -606,4 +624,54 @@ public class CardsManager : MonoBehaviour
         CardsMatchWithSprites();
         InvokeRepeating("CreateCards", 0.5f, 0.5f);
     }
+
+    private IEnumerator movePlayerThirdCard()
+    {
+        float z = -90f;
+        yield return new WaitForSeconds(1f);
+        float t = 0;
+
+        while (t < 1f)
+        {
+            t += Time.deltaTime * 5;
+            player_rect.anchoredPosition = Vector2.Lerp(playerStartPos, playerTargetPos, t);
+            yield return new WaitForEndOfFrame();
+        }
+        player_rect.anchoredPosition = playerTargetPos;
+        StartCoroutine(RotateCards( player_rect,z));
+    }
+
+    private IEnumerator moveBankerThirdCard()
+    {
+        float z = 90f;
+        yield return new WaitForSeconds(1f);
+        float t = 0;
+
+        while (t < 1f)
+        {
+            t += Time.deltaTime * 5;
+            banker_rect.anchoredPosition = Vector2.Lerp(bankerStartPos, bankerTargetPos, t);
+            yield return new WaitForEndOfFrame();
+        }
+        banker_rect.anchoredPosition = bankerTargetPos;
+        StartCoroutine(RotateCards(banker_rect,z));
+    }
+
+    private IEnumerator RotateCards( RectTransform m_rect,float degree)
+    {
+        float t = 0;
+        yield return new WaitForSeconds(1f);
+
+        while (t < 1f)
+        {
+            t += Time.deltaTime;
+            m_rect.transform.rotation = Quaternion.Lerp(Quaternion.identity, Quaternion.Euler(0, 0, degree), t);
+            yield return new WaitForEndOfFrame();
+        }
+        m_rect.transform.rotation = Quaternion.Euler(0, 180, degree);
+    }
+    
+
+    //Banker Draw Button (380,360);
+    //Player Draw Button (1100, 360);
 }
