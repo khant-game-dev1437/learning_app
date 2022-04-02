@@ -16,8 +16,10 @@ public class UIManager : MonoBehaviour
     public Button btnBankerThird;
     public Button btnPlayerThird;
     public Button btnNextGame;
+    public Button btnCardEach;
     public Text Name_Txt;
-
+    public Text WinOrLose_Txt;
+    public Text Wrong_Txt;
     // MainMenu GameObject
     public GameObject MainMenu;
 
@@ -43,9 +45,10 @@ public class UIManager : MonoBehaviour
     {
         btnBankerThird.gameObject.SetActive(false);
         btnPlayerThird.gameObject.SetActive(false);
+        btnCardEach.gameObject.SetActive(false);
         btnNextGame.gameObject.SetActive(false);
         MainMenu.SetActive(false);
-        StartCoroutine(ActiveCardButtons());
+        //StartCoroutine(ActiveCardButtons());
     }
 
     // Update is called once per frame
@@ -100,12 +103,16 @@ public class UIManager : MonoBehaviour
         btnBankerThird.gameObject.SetActive(false);
         btnPlayerThird.gameObject.SetActive(false);
         btnNextGame.gameObject.SetActive(false);
+        WinOrLose_Txt.gameObject.SetActive(false);
+        btnCardEach.gameObject.SetActive(false);
     }
     public IEnumerator ActiveCardButtons()
     {
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(1.5f);
         btnBankerThird.gameObject.SetActive(true);
         btnPlayerThird.gameObject.SetActive(true);
         btnNextGame.gameObject.SetActive(true);
+        WinOrLose_Txt.gameObject.SetActive(true);
+        btnCardEach.gameObject.SetActive(true);
     }
 }

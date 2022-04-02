@@ -43,17 +43,17 @@ public class CardsCaculation : MonoBehaviour
         switch (counter)
         {
             case 1:
-                targetPos = new Vector2(1000, 550);
+                targetPos = new Vector2(1000, 400);
                 break;
             case 2:
-                targetPos = new Vector2(500, 550);
+                targetPos = new Vector2(500, 400);
                 break;
             case 3:
-                targetPos = new Vector2(1100, 550);
+                targetPos = new Vector2(1100, 400);
                 break;
 
             case 4:
-                targetPos = new Vector2(400, 550);
+                targetPos = new Vector2(400, 400);
                 break;
                 //case 6:
                 //    Player = false;
@@ -120,6 +120,7 @@ public class CardsCaculation : MonoBehaviour
         }
 
         m_rect.transform.rotation = Quaternion.Euler(0, 180, z);
+       CardsManager.Instance.CountChildObjects();
     }
 
 
