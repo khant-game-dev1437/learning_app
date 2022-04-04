@@ -34,7 +34,7 @@ public class CardsManager : MonoBehaviour
     private int bankerThirdCard;
     private int randomNo = 0;
     private int gameObjectsCounter = 0;
-    private int beforeBankerTotal = 0;
+    private int beforeBankerTotal = -1;
     private int beforePlayerTotal = 0;
 
     public int counter = 0;
@@ -343,25 +343,25 @@ public class CardsManager : MonoBehaviour
             {
                 WinnerName("Player Wins");
                 //UIManager.Instance.WinOrLose_Txt.text = "Player Wins";
-                UIManager.Instance.WinOrLose_Txt.text = winnerName;
+               // UIManager.Instance.WinOrLose_Txt.text = winnerName;
                 return;
             }
             else if (playerTotal < bankerTotal)
             {
                 WinnerName("Banker Wins");
                 //UIManager.Instance.WinOrLose_Txt.text = "Banker Wins";
-                UIManager.Instance.WinOrLose_Txt.text = winnerName;
+                //UIManager.Instance.WinOrLose_Txt.text = winnerName;
                 return;
             }
             else
             {
-                UIManager.Instance.WinOrLose_Txt.text = "Tie";
+                WinnerName("Tie");
                 return;
             }
         }
         else
-        { 
-            
+        {
+
 
             checkOver10();
             //For Player Stands and Banker < 6
@@ -385,10 +385,11 @@ public class CardsManager : MonoBehaviour
                     }
                     else
                     {
-                        Tie();
+                        WinnerName("Tie");
                     }
                 }
-            } else if (bankerTotal == 3 && playerThirdCard == 8)
+            }
+            else if (bankerTotal == 3 && playerThirdCard == 8)
             {
                 if (bankerTotal > playerTotal)
                 {
@@ -400,7 +401,7 @@ public class CardsManager : MonoBehaviour
                 }
                 else
                 {
-                    Tie();
+                    WinnerName("Tie");
                 }
             }//Player is < 6 and check Banker checks Player 3rd card
             else if (playerTotal >= 0 && playerTotal < 6)
@@ -428,7 +429,7 @@ public class CardsManager : MonoBehaviour
                     }
                     else
                     {
-                        Tie();
+                        WinnerName("Tie");
                     }
                 }
                 else
@@ -443,7 +444,7 @@ public class CardsManager : MonoBehaviour
                     }
                     else
                     {
-                        Tie();
+                        WinnerName("Tie");
                     }
                 }
 
@@ -456,7 +457,6 @@ public class CardsManager : MonoBehaviour
         if (playerTotal >= 10)
         {
             playerTotal -= 10;
-            Debug.Log("Check10 Player " + playerTotal);
         }
         else if (playerTotal > 20)
         {
@@ -475,14 +475,6 @@ public class CardsManager : MonoBehaviour
     public void WinnerName(string winner)
     {
         winnerName = winner;
-
-        return;
-    }
-
-    public void Tie()
-    {
-        UIManager.Instance.WinOrLose_Txt.text = "Tie";
-        return;
     }
 
     public int getPlayerData()
@@ -547,16 +539,23 @@ public class CardsManager : MonoBehaviour
     {
         Debug.Log("BeforeBankerTotal = " + beforeBankerTotal + " BeforePlayerTotal = " + beforePlayerTotal);
         UIManager.Instance.Wrong_Txt.text = string.Empty;
-
-        //Bug
+        if(isPlayerDraw != true)
+        {
+            UIManager.Instance.Wrong_Txt.text = "Player cannot Draw";
+        }
+        if(beforePlayerTotal == 8 || beforePlayerTotal == 9)
+        {
+            UIManager.Instance.Wrong_Txt.text = "Player cannot draw in Nautral";
+            UIManager.Instance.WinOrLose_Txt.text = winnerName;
+        }
         if (beforeBankerTotal == 8 || beforeBankerTotal == 9)
         {
             UIManager.Instance.Wrong_Txt.text = "Player cannot draw";
-            
+            UIManager.Instance.WinOrLose_Txt.text = winnerName;
             if (beforePlayerTotal < beforeBankerTotal)
             {
                 WinnerName("Banker Wins");
-                UIManager.Instance.WinOrLose_Txt.text = "Banker Wins";
+                 UIManager.Instance.WinOrLose_Txt.text = winnerName;
             }
         }
         if (isBankerDraw != true && isPlayerDraw != true)
@@ -569,6 +568,11 @@ public class CardsManager : MonoBehaviour
             Debug.Log("isPlayerDraw && isPlayerDrawed == true" + " " + isPlayerDraw + "" + isPlayerDrawed);
             InstantiatePlayerThirdCard();
             //UIManager.Instance.WinOrLose_Txt.text = winnerName;
+        } else if(isPlayerDraw != true && isBankerDraw == true)
+        {
+            InstantiateBankerThirdCard();
+            UIManager.Instance.WinOrLose_Txt.text = winnerName;
+            UIManager.Instance.Wrong_Txt.text = "Player cannot draw, it stands";
         }
         else
         {
@@ -581,45 +585,67 @@ public class CardsManager : MonoBehaviour
     public void createBankerThirdCard()
     {
         UIManager.Instance.Wrong_Txt.text = string.Empty;
+
+        if (beforeBankerTotal == 8 || beforeBankerTotal == 9)
+        {
+            UIManager.Instance.Wrong_Txt.text = "Banker cannot draw in Nautral";
+            UIManager.Instance.WinOrLose_Txt.text = winnerName;
+        }
         if (beforePlayerTotal == 8 || beforePlayerTotal == 9)
         {
             UIManager.Instance.Wrong_Txt.text = "Banker cannot draw";
             if (beforePlayerTotal > beforeBankerTotal)
             {
                 WinnerName("Player Wins");
-                UIManager.Instance.WinOrLose_Txt.text = "Player Wins";
+                 UIManager.Instance.WinOrLose_Txt.text = winnerName;
             }
         }
         if (isBankerDraw != true && isPlayerDraw != true)
         {
+            UIManager.Instance.Wrong_Txt.text = "Banker cannot draw";
             UIManager.Instance.WinOrLose_Txt.text = winnerName;
         }
         if (isBankerDraw == true && isBankerDrawed == true && isPlayerDrawed == false && isPlayerDraw == true)
         {
             InstantiateBankerThirdCard();
-           UIManager.Instance.WinOrLose_Txt.text = winnerName;
+            UIManager.Instance.WinOrLose_Txt.text = winnerName;
             Debug.Log("isBankerDraw && isBankerDrawed == true && isPlayerDrawed == false && isPlayerDraw == true");
-        }   
+        }
         else if (isBankerDraw == true && isBankerDrawed == true && isPlayerDraw == false)
         {
             InstantiateBankerThirdCard();
             UIManager.Instance.WinOrLose_Txt.text = winnerName;
             Debug.Log("isBankerDraw && isBankerDrawed == true && isPlayerDraw == false");
         }
-        else
+        else if(isBankerDraw != true && isPlayerDraw == true && isPlayerDrawed == true)
         {
+            InstantiatePlayerThirdCard();
             Debug.Log("isBankerDraw : " + isBankerDraw + " isBankerDrawed " + isBankerDrawed + " isPlayerDraw " + isPlayerDraw);
             UIManager.Instance.Wrong_Txt.text = "Banker cannot draw";
             Debug.Log("WRONG Banker DRAW");
+        } else if(isBankerDraw == true && isBankerDrawed == true && isPlayerDraw == true && isPlayerDrawed == true)
+        {
+            InstantiatePlayerThirdCard();
+            InstantiateBankerThirdCard();
+            UIManager.Instance.WinOrLose_Txt.text = winnerName;
+            UIManager.Instance.Wrong_Txt.text = "Banker cannot draw, Player needs to draw first";
         }
     }
 
     public void CardEach()
     {
-        if(isPlayerDraw && isBankerDraw)
+        Debug.Log("CardEach" + beforeBankerTotal);
+        if (isPlayerDraw && isBankerDrawed == true && isPlayerDrawed == true)
         {
-            createPlayerThirdCard();
-            createBankerThirdCard();
+            Debug.Log("CardEach True ");
+            if (beforeBankerTotal == 0 || beforeBankerTotal == 1 || beforeBankerTotal == 2)
+                if (beforePlayerTotal < 6)
+                {
+                    Debug.Log("CardEach Banker ");
+                    createPlayerThirdCard();
+                    createBankerThirdCard();
+                    isBankerDrawed = false;
+                }
         }
     }
 
@@ -702,7 +728,7 @@ public class CardsManager : MonoBehaviour
         banker3rdCounter = false;
         isBankerDrawed = true;
         isPlayerDrawed = true;
-        beforeBankerTotal = 0;
+        beforeBankerTotal = -1;
         beforePlayerTotal = 0;
         CardsAddToList();
         CardsMatchWithSprites();
@@ -754,9 +780,8 @@ public class CardsManager : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         m_rect.transform.rotation = Quaternion.Euler(0, 180, degree);
-        
-    }
 
+    }
 
     //Banker Draw Button (380,360);
     //Player Draw Button (1100, 360);
@@ -774,6 +799,31 @@ public class CardsManager : MonoBehaviour
                 }
                 gameObjectsCounter++;
             }
+        }
+    }
+
+    public void CheckTrueOrFalseWinner(string name)
+    {
+        Debug.Log("CHECK TRUE OR FALSE" + name);
+        if (name != winnerName)
+        {
+            UIManager.Instance.Wrong_Txt.text = "Wrong";
+
+            if (isPlayerDraw && isPlayerDrawed)
+            {
+                createPlayerThirdCard();
+                isPlayerDrawed = false;
+            }
+            if (isBankerDraw && isBankerDrawed)
+            {
+                createBankerThirdCard();
+                isBankerDrawed = false;
+            }
+            UIManager.Instance.WinOrLose_Txt.text = winnerName;
+            return;
+        }  else
+        {
+            UIManager.Instance.Wrong_Txt.text = "True";
         }
     }
 }

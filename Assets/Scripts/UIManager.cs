@@ -17,6 +17,11 @@ public class UIManager : MonoBehaviour
     public Button btnPlayerThird;
     public Button btnNextGame;
     public Button btnCardEach;
+
+    public Button btnPlayerWins;
+    public Button btnBankerWins;
+    public Button btnTie;
+
     public Text Name_Txt;
     public Text WinOrLose_Txt;
     public Text Wrong_Txt;
@@ -47,8 +52,15 @@ public class UIManager : MonoBehaviour
         btnPlayerThird.gameObject.SetActive(false);
         btnCardEach.gameObject.SetActive(false);
         btnNextGame.gameObject.SetActive(false);
+        btnBankerWins.gameObject.SetActive(false);
+        btnPlayerWins.gameObject.SetActive(false);
+        btnTie.gameObject.SetActive(false);
+
         MainMenu.SetActive(false);
         //StartCoroutine(ActiveCardButtons());
+        btnBankerWins.onClick.AddListener(delegate { CardsManager.Instance.CheckTrueOrFalseWinner(btnBankerWins.gameObject.transform.GetChild(0).GetComponent<Text>().text); });
+        btnPlayerWins.onClick.AddListener(delegate { CardsManager.Instance.CheckTrueOrFalseWinner(btnPlayerWins.gameObject.transform.GetChild(0).GetComponent<Text>().text); });
+        btnTie.onClick.AddListener(delegate { CardsManager.Instance.CheckTrueOrFalseWinner(btnTie.gameObject.transform.GetChild(0).GetComponent<Text>().text); });
     }
 
     // Update is called once per frame
@@ -105,6 +117,9 @@ public class UIManager : MonoBehaviour
         btnNextGame.gameObject.SetActive(false);
         WinOrLose_Txt.gameObject.SetActive(false);
         btnCardEach.gameObject.SetActive(false);
+        btnBankerWins.gameObject.SetActive(false);
+        btnPlayerWins.gameObject.SetActive(false);
+        btnTie.gameObject.SetActive(false);
     }
     public IEnumerator ActiveCardButtons()
     {
@@ -114,5 +129,8 @@ public class UIManager : MonoBehaviour
         btnNextGame.gameObject.SetActive(true);
         WinOrLose_Txt.gameObject.SetActive(true);
         btnCardEach.gameObject.SetActive(true);
+        btnBankerWins.gameObject.SetActive(true);
+        btnPlayerWins.gameObject.SetActive(true);
+        btnTie.gameObject.SetActive(true);
     }
 }

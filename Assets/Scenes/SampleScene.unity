@@ -193,7 +193,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Banker Win
+  m_Text: Banker Wins
 --- !u!222 &4843670
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -457,7 +457,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &131993145
 RectTransform:
   m_ObjectHideFlags: 0
@@ -524,7 +524,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 984010759}
         m_TargetAssemblyTypeName: CardsManager, Assembly-CSharp
-        m_MethodName: createPlayerThirdCard
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2139,7 +2139,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &465955802
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2206,7 +2206,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 984010759}
         m_TargetAssemblyTypeName: CardsManager, Assembly-CSharp
-        m_MethodName: createBankerThirdCard
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3023,7 +3023,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Player Win
+  m_Text: Player Wins
 --- !u!222 &666439488
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3864,6 +3864,10 @@ MonoBehaviour:
   btnBankerThird: {fileID: 643236239}
   btnPlayerThird: {fileID: 1855688265}
   btnNextGame: {fileID: 290341334}
+  btnCardEach: {fileID: 1110695935}
+  btnPlayerWins: {fileID: 131993146}
+  btnBankerWins: {fileID: 465955803}
+  btnTie: {fileID: 1364198148}
   Name_Txt: {fileID: 1052197830}
   WinOrLose_Txt: {fileID: 1639547182}
   Wrong_Txt: {fileID: 1404937984}
@@ -4464,7 +4468,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1364198147
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4531,7 +4535,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 984010759}
         m_TargetAssemblyTypeName: CardsManager, Assembly-CSharp
-        m_MethodName: createPlayerThirdCard
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
