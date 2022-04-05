@@ -132,5 +132,27 @@ public class UIManager : MonoBehaviour
         btnBankerWins.gameObject.SetActive(true);
         btnPlayerWins.gameObject.SetActive(true);
         btnTie.gameObject.SetActive(true);
+
+        //ActiveCardBtns();
+    }
+
+    public void DisableCardBtns()
+    {
+        btnBankerThird.interactable = false;
+        btnPlayerThird.interactable = false;
+        btnCardEach.interactable = false;
+        btnBankerWins.interactable = false;
+        btnPlayerWins.interactable = false;
+        btnTie.interactable = false;
+    }
+
+    public void ActiveCardBtns()
+    {
+        btnBankerThird.interactable = true;
+        btnPlayerThird.interactable = true;
+        btnCardEach.interactable = true;
+        btnBankerWins.interactable = true;
+        btnPlayerWins.interactable = true;
+        btnTie.interactable = true;
     }
 }
