@@ -138,6 +138,13 @@ public class UIManager : MonoBehaviour
         btnBankerWins.gameObject.SetActive(true);
         btnPlayerWins.gameObject.SetActive(true);
         btnTie.gameObject.SetActive(true);
+        if (CardsManager.Instance.isStates == "isCardTest")
+        {
+            btnNextGame.gameObject.SetActive(false);
+        } else
+        {
+            btnNextGame.gameObject.SetActive(true);
+        }
 
         //ActiveCardBtns();
     }
