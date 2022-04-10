@@ -37,7 +37,7 @@ public class CardsManager : MonoBehaviour
     private int gameObjectsCounter = 0;
     private int beforeBankerTotal = -1;
     private int beforePlayerTotal = 0;
-    private int timer = 0;
+    private int timer = 20;
 
     public int counter = 0;
     public int bankerCounter = 0;
@@ -892,7 +892,7 @@ public class CardsManager : MonoBehaviour
         beforeBankerTotal = -1;
         beforePlayerTotal = 0;
         //isGameFinished = false;
-        timer = 0;
+        timer = 20;
         checkCardsPracOrTest(isStates);
         CardsAddToList();
         CardsMatchWithSprites();
@@ -1132,7 +1132,7 @@ public class CardsManager : MonoBehaviour
     {
         UIManager.Instance.cardTimer_Txt.gameObject.SetActive(true);
         UIManager.Instance.cardTimer_Txt.text = timer.ToString();
-        if (timer == 20)
+        if (timer == 0)
         {
             Debug.Log("UP P");
             UIManager.Instance.Wrong_Txt.text = "Time is Up!!!! ";
@@ -1141,7 +1141,7 @@ public class CardsManager : MonoBehaviour
             return;
         }
         Debug.Log("TIMER " + timer);
-        timer++;
+        timer--;
     }
 
     public void checkCardsPracOrTest(string checkCardExam)
