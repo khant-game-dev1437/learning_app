@@ -26,6 +26,7 @@ public class CardsManager : MonoBehaviour
     private bool isBankerDraw = false;
     private bool isPlayerDraw = false;
     private bool isPlayer = true;
+    //private bool isGameFinished;
 
     private int count = 0;
     private int playerTotal;
@@ -36,6 +37,7 @@ public class CardsManager : MonoBehaviour
     private int gameObjectsCounter = 0;
     private int beforeBankerTotal = -1;
     private int beforePlayerTotal = 0;
+    private int timer = 0;
 
     public int counter = 0;
     public int bankerCounter = 0;
@@ -45,6 +47,7 @@ public class CardsManager : MonoBehaviour
 
     private bool isBankerDrawed = true;
     private bool isPlayerDrawed = true;
+    private string isStates = string.Empty;
     public int practice = 0;
 
     List<int> CardsList = new List<int>();
@@ -387,6 +390,18 @@ public class CardsManager : MonoBehaviour
                     {
                         WinnerName("Tie");
                     }
+                } else if(bankerTotal >=6 || bankerTotal <= 7)
+                {
+                    if(playerTotal > bankerTotal)
+                    {
+                        WinnerName("Player Wins");
+                    } else if (playerTotal < bankerTotal)
+                    {
+                        WinnerName("Banker Wins");
+                    } else
+                    {
+                        WinnerName("Tie");
+                    }
                 }
             }
             else if (bankerTotal == 3 && playerThirdCard == 8)
@@ -537,6 +552,11 @@ public class CardsManager : MonoBehaviour
 
     public void createPlayerThirdCard()
     {
+        //if (isGameFinished)
+        //{
+        //    UIManager.Instance.Wrong_Txt.text = "Time is up! You failed";
+        //    return;
+        //}
         //UIManager.Instance.DisableCardBtns();
         Debug.Log("BeforeBankerTotal = " + beforeBankerTotal + " BeforePlayerTotal = " + beforePlayerTotal);
         UIManager.Instance.Wrong_Txt.text = string.Empty;
@@ -544,18 +564,21 @@ public class CardsManager : MonoBehaviour
         {
             UIManager.Instance.DisableCardBtns();
             UIManager.Instance.Wrong_Txt.text = "Player cannot Draw";
+            UIManager.Instance.imgCross.SetActive(true);
         }
         if(beforePlayerTotal == 8 || beforePlayerTotal == 9)
         {
             UIManager.Instance.DisableCardBtns();
             UIManager.Instance.Wrong_Txt.text = "Player cannot draw in Nautral";
             UIManager.Instance.WinOrLose_Txt.text = winnerName;
+            UIManager.Instance.imgCross.SetActive(true);
         }
         if (beforeBankerTotal == 8 || beforeBankerTotal == 9)
         {
             UIManager.Instance.DisableCardBtns();
             UIManager.Instance.Wrong_Txt.text = "Player cannot draw";
             UIManager.Instance.WinOrLose_Txt.text = winnerName;
+            UIManager.Instance.imgCross.SetActive(true);
             if (beforePlayerTotal < beforeBankerTotal)
             {
                 WinnerName("Banker Wins");
@@ -572,24 +595,45 @@ public class CardsManager : MonoBehaviour
             Debug.Log("isPlayerDraw && isPlayerDrawed == true" + " " + isPlayerDraw + "" + isPlayerDrawed);
             InstantiatePlayerThirdCard();
             //UIManager.Instance.WinOrLose_Txt.text = winnerName;
-        } else if(isPlayerDraw != true && isBankerDraw == true)
+        } else if(isPlayerDraw != true && isBankerDraw == true && isBankerDrawed != false)
         {
             UIManager.Instance.DisableCardBtns();
             InstantiateBankerThirdCard();
             UIManager.Instance.WinOrLose_Txt.text = winnerName;
             UIManager.Instance.Wrong_Txt.text = "Player cannot draw, it stands";
+            UIManager.Instance.imgCross.SetActive(true);
+        } else if(isPlayerDraw != true && isBankerDraw == true && isBankerDrawed != true)
+        {
+            UIManager.Instance.DisableCardBtns();
+            UIManager.Instance.WinOrLose_Txt.text = winnerName;
+            UIManager.Instance.Wrong_Txt.text = "Player cannot draw, it stands";
+            UIManager.Instance.imgCross.SetActive(true);
+        } else if(isPlayerDraw == true && isBankerDraw == true && isPlayerDrawed == false && isBankerDrawed == true)
+        {
+            InstantiateBankerThirdCard();
+            UIManager.Instance.DisableCardBtns();
+            UIManager.Instance.Wrong_Txt.text = "Player cannot draw again";
+            UIManager.Instance.WinOrLose_Txt.text = winnerName;
+            UIManager.Instance.imgCross.SetActive(true);
         }
         else
         {
+            UIManager.Instance.WinOrLose_Txt.text = winnerName;
             UIManager.Instance.DisableCardBtns();
             Debug.Log("isPlayerDraw " + isPlayerDraw + " isPlayerDrawed " + isPlayerDrawed);
             UIManager.Instance.Wrong_Txt.text = "Player cannot draw";
+            UIManager.Instance.imgCross.SetActive(true);
             //Debug.Log("WRONG PLAYER DRAW");
         }
     }
 
     public void createBankerThirdCard()
     {
+        //if (isGameFinished)
+        //{
+        //    UIManager.Instance.Wrong_Txt.text = "Time is up! You failed";
+        //    return;
+        //}
         UIManager.Instance.Wrong_Txt.text = string.Empty;
 
         if (beforeBankerTotal == 8 || beforeBankerTotal == 9)
@@ -597,10 +641,12 @@ public class CardsManager : MonoBehaviour
             UIManager.Instance.DisableCardBtns();
             UIManager.Instance.Wrong_Txt.text = "Banker cannot draw in Nautral";
             UIManager.Instance.WinOrLose_Txt.text = winnerName;
+            UIManager.Instance.imgCross.SetActive(true);
         }
         if (beforePlayerTotal == 8 || beforePlayerTotal == 9)
         {
             UIManager.Instance.DisableCardBtns();
+            UIManager.Instance.imgCross.SetActive(true);
             UIManager.Instance.Wrong_Txt.text = "Banker cannot draw";
             if (beforePlayerTotal > beforeBankerTotal)
             {
@@ -613,17 +659,18 @@ public class CardsManager : MonoBehaviour
             UIManager.Instance.DisableCardBtns();
             UIManager.Instance.Wrong_Txt.text = "Banker cannot draw";
             UIManager.Instance.WinOrLose_Txt.text = winnerName;
+            UIManager.Instance.imgCross.SetActive(true);
         }
         if (isBankerDraw == true && isBankerDrawed == true && isPlayerDrawed == false && isPlayerDraw == true)
         {
             InstantiateBankerThirdCard();
-            UIManager.Instance.WinOrLose_Txt.text = winnerName;
+            //UIManager.Instance.WinOrLose_Txt.text = winnerName;
             Debug.Log("isBankerDraw && isBankerDrawed == true && isPlayerDrawed == false && isPlayerDraw == true");
         }
         else if (isBankerDraw == true && isBankerDrawed == true && isPlayerDraw == false)
         {
             InstantiateBankerThirdCard();
-            UIManager.Instance.WinOrLose_Txt.text = winnerName;
+            //UIManager.Instance.WinOrLose_Txt.text = winnerName;
             Debug.Log("isBankerDraw && isBankerDrawed == true && isPlayerDraw == false");
         }
         else if(isBankerDraw != true && isPlayerDraw == true && isPlayerDrawed == true)
@@ -634,6 +681,7 @@ public class CardsManager : MonoBehaviour
             UIManager.Instance.Wrong_Txt.text = "Banker cannot draw";
             UIManager.Instance.WinOrLose_Txt.text = winnerName;
             Debug.Log("WRONG Banker DRAW");
+            UIManager.Instance.imgCross.SetActive(true);
         } else if(isBankerDraw == true && isBankerDrawed == true && isPlayerDraw == true && isPlayerDrawed == true)
         {
             UIManager.Instance.DisableCardBtns();
@@ -641,30 +689,106 @@ public class CardsManager : MonoBehaviour
             InstantiateBankerThirdCard();
             UIManager.Instance.WinOrLose_Txt.text = winnerName;
             UIManager.Instance.Wrong_Txt.text = "Banker cannot draw, Player needs to draw first";
+            UIManager.Instance.imgCross.SetActive(true);
         } else if(isBankerDraw == false && isPlayerDraw == true && isPlayerDrawed == false)
         {
             UIManager.Instance.DisableCardBtns();
             UIManager.Instance.WinOrLose_Txt.text = winnerName;
             UIManager.Instance.Wrong_Txt.text = "Banker cannot draw...";
+            UIManager.Instance.imgCross.SetActive(true);
+        }
+        else if (isPlayerDraw == true && isBankerDraw == true && isPlayerDrawed == false && isBankerDrawed == false)
+        {
+            UIManager.Instance.DisableCardBtns();
+            UIManager.Instance.Wrong_Txt.text = "Banker cannot draw again";
+            UIManager.Instance.WinOrLose_Txt.text = winnerName;
+            UIManager.Instance.imgCross.SetActive(true);
         }
     }
 
     public void CardEach()
     {
-        UIManager.Instance.DisableCardBtns();
+        //if (isGameFinished)
+        //{
+        //    UIManager.Instance.Wrong_Txt.text = "Time is up! You failed";
+        //    return;
+        //}
+        //UIManager.Instance.DisableCardBtns();
         Debug.Log("CardEach" + beforeBankerTotal);
-        if (isPlayerDraw && isBankerDrawed == true && isPlayerDrawed == true)
+        if (isBankerDraw && isPlayerDraw && isBankerDrawed == true && isPlayerDrawed == true)
         {
             Debug.Log("CardEach True ");
             if (beforeBankerTotal == 0 || beforeBankerTotal == 1 || beforeBankerTotal == 2)
+            {
                 if (beforePlayerTotal < 6)
                 {
                     Debug.Log("CardEach Banker ");
-                    createPlayerThirdCard();
-                    createBankerThirdCard();
+                    InstantiatePlayerThirdCard();
+                    InstantiateBankerThirdCard();
+                    isBankerDrawed = false;
+                    isPlayerDrawed = false;
+                    return;
+                }
+                else if (isPlayerDraw == true && isPlayerDrawed == false && isBankerDraw == true && isBankerDrawed == true)
+                {
+                    UIManager.Instance.imgCross.SetActive(true);
+                    UIManager.Instance.DisableCardBtns();
+                    InstantiateBankerThirdCard();
+                    UIManager.Instance.WinOrLose_Txt.text = winnerName;
+                    UIManager.Instance.Wrong_Txt.text = "CardEach only works in BankerPoints 0 to 2 and PlayerPoints 0 to 5. Incorrect xD";
                     isBankerDrawed = false;
                 }
+            } else
+            {
+                InstantiatePlayerThirdCard();
+                InstantiateBankerThirdCard();
+                isBankerDrawed = false;
+                isPlayerDrawed = false;
+                UIManager.Instance.Wrong_Txt.text = "CardEach only works in BankerPoints 0 to 2 and PlayerPoints 0 to 5. Incorrect xD";
+                UIManager.Instance.WinOrLose_Txt.text = winnerName;
+                return;
+            }
+            
+        } 
+        
+        if(isPlayerDraw != true && isBankerDraw != true)
+        {
+            UIManager.Instance.imgCross.SetActive(true);
+            UIManager.Instance.DisableCardBtns();
+            UIManager.Instance.Wrong_Txt.text = "CardEach only works in BankerPoints 0 to 2 and PlayerPoints 0 to 5. Incorrect";
+            UIManager.Instance.WinOrLose_Txt.text = winnerName;
+        } else if(isBankerDraw == true && isPlayerDraw == false)
+        {
+            InstantiateBankerThirdCard();
+            UIManager.Instance.imgCross.SetActive(true);
+            UIManager.Instance.DisableCardBtns();
+            UIManager.Instance.Wrong_Txt.text = "CardEach only works in BankerPoints 0 to 2 and PlayerPoints 0 to 5. Incorrect";
+            UIManager.Instance.WinOrLose_Txt.text = winnerName;
+            isPlayerDrawed = false;
+        } else if(isPlayerDraw == true && isBankerDraw == false)
+        {
+            InstantiatePlayerThirdCard();
+            UIManager.Instance.imgCross.SetActive(true);
+            UIManager.Instance.DisableCardBtns();
+            UIManager.Instance.Wrong_Txt.text = "CardEach only works in BankerPoints 0 to 2 and PlayerPoints 0 to 5. Incorrect";
+            UIManager.Instance.WinOrLose_Txt.text = winnerName;
+        } else if(isPlayerDraw == true && isBankerDraw == true && isPlayerDrawed == false && isBankerDrawed == false)
+        {
+            UIManager.Instance.imgCross.SetActive(true);
+            UIManager.Instance.DisableCardBtns();
+            UIManager.Instance.Wrong_Txt.text = "You have already drawed CardEach. Incorrect.";
+            UIManager.Instance.WinOrLose_Txt.text = winnerName;
+        } else if (isPlayerDraw == true && isBankerDraw == true && isPlayerDrawed == false && isBankerDrawed == true)
+        {
+            InstantiateBankerThirdCard();
+            UIManager.Instance.imgCross.SetActive(true);
+            UIManager.Instance.DisableCardBtns();
+            UIManager.Instance.Wrong_Txt.text = "You clicked Draw Player. Cannot click CardEach";
+            UIManager.Instance.WinOrLose_Txt.text = winnerName;
         }
+
+        //Test
+        
     }
 
     public void InstantiateBankerThirdCard()
@@ -747,6 +871,9 @@ public class CardsManager : MonoBehaviour
         isPlayerDrawed = true;
         beforeBankerTotal = -1;
         beforePlayerTotal = 0;
+        //isGameFinished = false;
+        timer = 0;
+        checkCardsPracOrTest(isStates);
         CardsAddToList();
         CardsMatchWithSprites();
         InvokeRepeating("CreateCards", 0.5f, 0.5f);
@@ -782,7 +909,6 @@ public class CardsManager : MonoBehaviour
         }
         banker_rect.anchoredPosition = bankerTargetPos;
         StartCoroutine(RotateCards(banker_rect, z));
-        UIManager.Instance.WinOrLose_Txt.text = winnerName;
     }
 
     private IEnumerator RotateCards(RectTransform m_rect, float degree)
@@ -821,37 +947,33 @@ public class CardsManager : MonoBehaviour
 
     public void CheckTrueOrFalseWinner(string name)
     {
+        
         Debug.Log("CHECK TRUE OR FALSE" + winnerName);
         if (name != winnerName)
         {
             UIManager.Instance.DisableCardBtns();
             UIManager.Instance.Wrong_Txt.text = "Wrong";
 
-            //if (isPlayerDraw && isPlayerDrawed)
-            //{
-            //    InstantiatePlayerThirdCard();
-            //    isPlayerDrawed = false;
-            //}
-            //if (isBankerDraw && isBankerDrawed)
-            //{
-            //    InstantiateBankerThirdCard();
-            //    isBankerDrawed = false;
-            //}
-            //UIManager.Instance.WinOrLose_Txt.text = winnerName;
             if (isPlayerDraw && isPlayerDrawed)
             {
                 UIManager.Instance.WinOrLose_Txt.text = winnerName;
                 InstantiatePlayerThirdCard();
                 UIManager.Instance.Wrong_Txt.text = "You are wrong, Player needs to draw 3rd card";
+                UIManager.Instance.imgCross.SetActive(true);
                 Debug.Log("FUCK1");
-               isPlayerDrawed = false;
+                if (isBankerDraw && isBankerDrawed)
+                {
+                    InstantiateBankerThirdCard();
+                }
+                isPlayerDrawed = false;
             }
-             if (isBankerDraw && isBankerDrawed)
+            if (isBankerDraw && isBankerDrawed)
             {
                 UIManager.Instance.WinOrLose_Txt.text = winnerName;
 
                 InstantiateBankerThirdCard();
                 UIManager.Instance.Wrong_Txt.text = "You are wrong, Banker needs to draw 3rd card";
+                UIManager.Instance.imgCross.SetActive(true);
                 Debug.Log("FUCK2");
                 isBankerDrawed = false;
             }
@@ -859,26 +981,53 @@ public class CardsManager : MonoBehaviour
             {
                 UIManager.Instance.WinOrLose_Txt.text = winnerName;
                 UIManager.Instance.Wrong_Txt.text = "Incorrect";
+                UIManager.Instance.imgCross.SetActive(true);
             }
             else if (isBankerDraw != true && isPlayerDraw != true)
             {
                 Debug.Log("WTF DOG");
                 UIManager.Instance.WinOrLose_Txt.text = winnerName;
                 UIManager.Instance.Wrong_Txt.text = "Incorrect";
+                UIManager.Instance.imgCross.SetActive(true);
+            }
+            if (isPlayerDraw == false && isBankerDraw == true && isBankerDrawed == true)
+            {
+                InstantiateBankerThirdCard();
+                UIManager.Instance.WinOrLose_Txt.text = winnerName;
+                UIManager.Instance.Wrong_Txt.text = "Incorrect";
+                UIManager.Instance.imgCross.SetActive(true);
+            }
+            if (isPlayerDraw == false && isBankerDraw == true && isBankerDrawed == false)
+            {
+                UIManager.Instance.WinOrLose_Txt.text = winnerName;
+                UIManager.Instance.Wrong_Txt.text = "Incorrect";
+                UIManager.Instance.imgCross.SetActive(true);
+            }
+            if (isPlayerDraw == true && isBankerDraw == false && isPlayerDrawed == false)
+            {
+                UIManager.Instance.WinOrLose_Txt.text = winnerName;
+                UIManager.Instance.Wrong_Txt.text = "Incorrect";
+                UIManager.Instance.imgCross.SetActive(true);
             }
             return;
         } else if(name == winnerName) 
         {
             Debug.Log("Tuu twr p" + winnerName);    
-            if (isPlayerDraw && isPlayerDrawed)
+            if (isPlayerDraw && isPlayerDrawed )
             {
                 UIManager.Instance.DisableCardBtns();
                 UIManager.Instance.WinOrLose_Txt.text = winnerName;
                 
                 InstantiatePlayerThirdCard();
                 UIManager.Instance.Wrong_Txt.text = "You are wrong, Player needs to draw 3rd card";
+                UIManager.Instance.imgCross.SetActive(true);
                 Debug.Log("FUCK1");
+                if(isBankerDraw && isBankerDrawed )
+                {
+                    InstantiateBankerThirdCard();
+                }
                 isPlayerDrawed = false;
+                return;
             }
             if (isBankerDraw && isBankerDrawed)
             {
@@ -887,21 +1036,176 @@ public class CardsManager : MonoBehaviour
                 
                 InstantiateBankerThirdCard();
                 UIManager.Instance.Wrong_Txt.text = "You are wrong, Banker needs to draw 3rd card";
+                UIManager.Instance.imgCross.SetActive(false);
                 Debug.Log("FUCK2");
                 isBankerDrawed = false;
+                return;
+            }
+            if (isPlayerDraw == true && isPlayerDrawed == false && isBankerDraw== true && isBankerDrawed == true)
+            {
+                InstantiateBankerThirdCard();
+                UIManager.Instance.WinOrLose_Txt.text = winnerName;
+                UIManager.Instance.Wrong_Txt.text = "You are wrong, Banker needs to draw 3rd card";
+                UIManager.Instance.imgCross.SetActive(false);
             }
             if(isPlayerDraw && isPlayerDrawed == false && isBankerDraw && isBankerDrawed == false)
             {
                 UIManager.Instance.DisableCardBtns();
                 UIManager.Instance.WinOrLose_Txt.text = winnerName;
-                //UIManager.Instance.Wrong_Txt.text = "Incorrect";
+                UIManager.Instance.Wrong_Txt.text = "Correct";
+                CancelInvoke("Timer");
+                StartCoroutine("NextGameAfterTimer");
             } else if(isBankerDraw != true && isPlayerDraw != true)
             {
                 UIManager.Instance.DisableCardBtns();
                 Debug.Log("WTF DOG");
                 UIManager.Instance.WinOrLose_Txt.text = winnerName;
                 UIManager.Instance.Wrong_Txt.text = "Correct";
+                CancelInvoke("Timer");
+                StartCoroutine("NextGameAfterTimer");
             }
+            if (isPlayerDraw == false && isBankerDraw == true && isBankerDrawed == true)
+            {
+                UIManager.Instance.DisableCardBtns();
+                InstantiateBankerThirdCard();
+                UIManager.Instance.WinOrLose_Txt.text = winnerName;
+                UIManager.Instance.Wrong_Txt.text = "Incorrect";
+                UIManager.Instance.imgCross.SetActive(true);
+            }
+            if (isPlayerDraw == false && isBankerDraw == true && isBankerDrawed == false)
+            {
+                UIManager.Instance.DisableCardBtns();
+                UIManager.Instance.WinOrLose_Txt.text = winnerName;
+                UIManager.Instance.Wrong_Txt.text = "Correct";
+                //UIManager.Instance.imgCross.SetActive(true);
+                CancelInvoke("Timer");
+                StartCoroutine("NextGameAfterTimer");
+            }
+            if(isPlayerDraw == true && isBankerDraw == false && isPlayerDrawed == false)
+            {
+                UIManager.Instance.DisableCardBtns();
+                UIManager.Instance.WinOrLose_Txt.text = winnerName;
+                UIManager.Instance.Wrong_Txt.text = "Correct";
+                CancelInvoke("Timer");
+                StartCoroutine("NextGameAfterTimer");
+                //UIManager.Instance.imgCross.SetActive(true);
+            }
+        }
+    }
+
+    public void Timer()
+    {
+        UIManager.Instance.cardTimer_Txt.gameObject.SetActive(true);
+        UIManager.Instance.cardTimer_Txt.text = timer.ToString();
+        if (timer == 20)
+        {
+            Debug.Log("UP P");
+            UIManager.Instance.Wrong_Txt.text = "Time is Up!!!! ";
+            forCardTest();
+            CancelInvoke("Timer");
+            StartCoroutine("NextGameAfterTimer");
+            return;
+        }
+        Debug.Log("TIMER " + timer);
+        timer++;
+    }
+
+    public void checkCardsPracOrTest(string checkCardExam)
+    {
+        AchievementManager.Instance.CardGame.SetActive(true);
+        Debug.Log("Check Card Exam : " + checkCardExam);
+        isStates = checkCardExam;
+
+        if (isStates == "isCardTest")
+        {
+            InvokeRepeating("Timer", 1f, 1f);
+        }
+    }
+
+    public IEnumerator NextGameAfterTimer()
+    {
+        yield return new WaitForSeconds(3f);
+        NextGame();
+    }
+
+    public void forCardTest()
+    {
+        if (isBankerDraw && isPlayerDraw && isBankerDrawed == true && isPlayerDrawed == true)
+        {
+            if (beforeBankerTotal == 0 || beforeBankerTotal == 1 || beforeBankerTotal == 2)
+            {
+                if (beforePlayerTotal < 6)
+                {
+                    Debug.Log("CardEach Banker ");
+                    InstantiatePlayerThirdCard();
+                    InstantiateBankerThirdCard();
+                    isBankerDrawed = false;
+                    isPlayerDrawed = false;
+                    return;
+                }
+                else if (isPlayerDraw == true && isPlayerDrawed == false && isBankerDraw == true && isBankerDrawed == true)
+                {
+                    UIManager.Instance.imgCross.SetActive(true);
+                    UIManager.Instance.DisableCardBtns();
+                    InstantiateBankerThirdCard();
+                    UIManager.Instance.WinOrLose_Txt.text = winnerName;
+                    UIManager.Instance.Wrong_Txt.text = "Timer is up!";
+                    isBankerDrawed = false;
+                }
+            }
+            else 
+            {
+                Debug.Log("xD");
+                InstantiatePlayerThirdCard();
+                InstantiateBankerThirdCard();
+                isBankerDrawed = false;
+                isPlayerDrawed = false;
+                UIManager.Instance.Wrong_Txt.text = "Timer is up!";
+                UIManager.Instance.WinOrLose_Txt.text = winnerName;
+                return;
+            }
+
+        }
+
+        if (isPlayerDraw != true && isBankerDraw != true)
+        {
+            UIManager.Instance.imgCross.SetActive(true);
+            UIManager.Instance.DisableCardBtns();
+            UIManager.Instance.Wrong_Txt.text = "Timer is up!";
+            UIManager.Instance.WinOrLose_Txt.text = winnerName;
+        }
+        else if (isBankerDraw == true && isPlayerDraw == false && isBankerDrawed == true)
+        {
+            InstantiateBankerThirdCard();
+            UIManager.Instance.imgCross.SetActive(true);
+            UIManager.Instance.DisableCardBtns();
+            UIManager.Instance.Wrong_Txt.text = "Timer is up!";
+            UIManager.Instance.WinOrLose_Txt.text = winnerName;
+            isBankerDrawed = false;
+        }
+        else if (isPlayerDraw == true && isBankerDraw == false)
+        {
+            InstantiatePlayerThirdCard();
+            UIManager.Instance.imgCross.SetActive(true);
+            UIManager.Instance.DisableCardBtns();
+            UIManager.Instance.Wrong_Txt.text = "Timer is up!";
+            UIManager.Instance.WinOrLose_Txt.text = winnerName;
+            isPlayerDrawed = false;
+        }
+        else if (isPlayerDraw == true && isBankerDraw == true && isPlayerDrawed == false && isBankerDrawed == false)
+        {
+            UIManager.Instance.imgCross.SetActive(true);
+            UIManager.Instance.DisableCardBtns();
+            UIManager.Instance.Wrong_Txt.text = "Timer is up!";
+            UIManager.Instance.WinOrLose_Txt.text = winnerName;
+        }
+        else if (isPlayerDraw == true && isBankerDraw == true && isPlayerDrawed == false && isBankerDrawed == true)
+        {
+            InstantiateBankerThirdCard();
+            UIManager.Instance.imgCross.SetActive(true);
+            UIManager.Instance.DisableCardBtns();
+            UIManager.Instance.Wrong_Txt.text = "Timer is up!";
+            UIManager.Instance.WinOrLose_Txt.text = winnerName;
         }
     }
 }

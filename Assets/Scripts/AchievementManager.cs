@@ -4,19 +4,37 @@ using UnityEngine;
 using UnityEngine.UI;
 public class AchievementManager : MonoBehaviour
 {
+    public static AchievementManager Instance { get; private set; }
     [SerializeField]
-    private GameObject CardGame;
-    private GameObject ChipsGame;
+    public GameObject CardGame;
+    public GameObject ChipsGame;
 
-    public Button btn_Practice;
-    public Button btn_Deal;
+    public Button btn_CardPractice;
+    public Button btn_CardDeal;
 
     Achievements achievement = new Achievements();
-    // Start is called before the first frame update
+    
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
+
     void Start()
     {
-        btn_Practice.interactable = false;
-        btn_Deal.interactable = false;
+        //btn_Practice.interactable = false;
+        //btn_Deal.interactable = false;
+        //btn_CardPractice.onClick.AddListener(Hi);
+        btn_CardPractice.onClick.AddListener(btnCardPractice);
+        btn_CardDeal.onClick.AddListener(btnCardPractice);
+        btn_CardPractice.onClick.AddListener(delegate { CardsManager.Instance.checkCardsPracOrTest("isPractice"); });
+        btn_CardDeal.onClick.AddListener(delegate { CardsManager.Instance.checkCardsPracOrTest("isCardTest"); });
     }
 
     // Update is called once per frame
@@ -25,10 +43,12 @@ public class AchievementManager : MonoBehaviour
         
     }
 
-    public void btnTutorial()
+    
+    public void btnCardPractice()
     {
-        achievement.cards_practice = 1;
-        btn_Practice.interactable = true;
+        
+        //achievement.cards_practice = 1;
+        btn_CardPractice.interactable = true;
         CardGame.SetActive(true);
         UIManager.Instance.Register.SetActive(false);
         UIManager.Instance.MainMenu.SetActive(false);
@@ -37,7 +57,7 @@ public class AchievementManager : MonoBehaviour
     public void btnDeal()
     {
         achievement.cards_deal = 1;
-        btn_Deal.interactable = true;
+        btn_CardDeal.interactable = true;
     }
 }
 

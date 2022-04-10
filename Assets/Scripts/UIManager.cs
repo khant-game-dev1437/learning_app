@@ -25,6 +25,7 @@ public class UIManager : MonoBehaviour
     public Text Name_Txt;
     public Text WinOrLose_Txt;
     public Text Wrong_Txt;
+    public Text cardTimer_Txt;
     // MainMenu GameObject
     public GameObject MainMenu;
 
@@ -33,6 +34,8 @@ public class UIManager : MonoBehaviour
     public GameObject Chips;
     public GameObject OverAll;
     public GameObject MenuCategories;
+
+    public GameObject imgCross;
 
     private void Awake()
     {
@@ -48,6 +51,8 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
+        cardTimer_Txt.gameObject.SetActive(false);
+        imgCross.SetActive(false);
         btnBankerThird.gameObject.SetActive(false);
         btnPlayerThird.gameObject.SetActive(false);
         btnCardEach.gameObject.SetActive(false);
@@ -120,6 +125,7 @@ public class UIManager : MonoBehaviour
         btnBankerWins.gameObject.SetActive(false);
         btnPlayerWins.gameObject.SetActive(false);
         btnTie.gameObject.SetActive(false);
+        imgCross.SetActive(false);
     }
     public IEnumerator ActiveCardButtons()
     {
