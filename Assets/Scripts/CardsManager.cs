@@ -50,6 +50,10 @@ public class CardsManager : MonoBehaviour
     public string isStates = string.Empty;
     public int practice = 0;
 
+    public int cardQuestionsTotal = 2;
+    public int cardQuestionsCounter = 1;
+    public int cardQuestionCorrect = 0;
+
     List<int> CardsList = new List<int>();
     List<string> Card1 = new List<string>();
     List<string> Card2 = new List<string>();
@@ -1140,24 +1144,38 @@ public class CardsManager : MonoBehaviour
             WrongAndStopTimer();
             return;
         }
-        Debug.Log("TIMER " + timer);
+        //Debug.Log("TIMER " + timer);
         timer--;
     }
 
     public void checkCardsPracOrTest(string checkCardExam)
     {
         AchievementManager.Instance.CardGame.SetActive(true);
-        Debug.Log("Check Card Exam : " + checkCardExam);
+        Debug.Log("CardNo Ha : " + cardQuestionsTotal);
         isStates = checkCardExam;
 
         if (isStates == "isCardTest")
-        {
+        {   
+            if (cardQuestionsCounter == cardQuestionsTotal)
+            {
+                Debug.Log("Pyae Twr p ha, checkCardsPracOrTest () : "+ cardQuestionsTotal);
+                StopAllCoroutines();
+                CancelInvoke("Timer");
+                CancelInvoke("CreateCards");
+                UIManager.Instance.ResultPanel.SetActive(true);
+                return;
+            }
+            cardQuestionsCounter++;
             InvokeRepeating("Timer", 1f, 1f);
         } 
     }
 
     public IEnumerator NextGameAfterTimer()
     {
+        cardQuestionCorrect++;
+        //float subtract = cardQuestionsTotal - cardQuestionCorrect;
+        
+        UIManager.Instance.ProgressBar.GetComponent<RectTransform>().localScale =new Vector3(cardQuestionCorrect/cardQuestionsTotal, 1,1) ;
         yield return new WaitForSeconds(3f);
         NextGame();
     }

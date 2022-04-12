@@ -43,13 +43,13 @@ public class CardsCaculation : MonoBehaviour
         switch (counter)
         {
             case 1:
-                targetPos = new Vector2(1000, 400);
+                targetPos = new Vector2(1100, 400);
                 break;
             case 2:
                 targetPos = new Vector2(500, 400);
                 break;
             case 3:
-                targetPos = new Vector2(1100, 400);
+                targetPos = new Vector2(1000, 400);
                 break;
 
             case 4:
