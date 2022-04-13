@@ -37,7 +37,7 @@ public class CardsManager : MonoBehaviour
     private int gameObjectsCounter = 0;
     private int beforeBankerTotal = -1;
     private int beforePlayerTotal = 0;
-    private int timer = 20;
+    public int timer = 20;
 
     public int counter = 0;
     public int bankerCounter = 0;
@@ -51,7 +51,7 @@ public class CardsManager : MonoBehaviour
     public int practice = 0;
 
     public int cardQuestionsTotal = 2;
-    public int cardQuestionsCounter = 1;
+    public int cardQuestionsCounter = 0;
     public int cardQuestionCorrect = 0;
 
     List<int> CardsList = new List<int>();
@@ -89,6 +89,7 @@ public class CardsManager : MonoBehaviour
         CardsAddToList();
         CardsMatchWithSprites();
         InvokeRepeating("CreateCards", 0.5f, 0.5f);
+        UIManager.Instance.ProgressBar.transform.GetChild(1).GetComponent<Text>().text = cardQuestionsCounter.ToString();
     }
 
     // Update is called once per frame
@@ -1161,7 +1162,7 @@ public class CardsManager : MonoBehaviour
                 Debug.Log("Pyae Twr p ha, checkCardsPracOrTest () : "+ cardQuestionsTotal);
                 StopAllCoroutines();
                 CancelInvoke("Timer");
-                CancelInvoke("CreateCards");
+                CancelInvoke();
                 UIManager.Instance.ResultPanel.SetActive(true);
                 return;
             }
@@ -1173,9 +1174,10 @@ public class CardsManager : MonoBehaviour
     public IEnumerator NextGameAfterTimer()
     {
         cardQuestionCorrect++;
-        //float subtract = cardQuestionsTotal - cardQuestionCorrect;
-        
-        UIManager.Instance.ProgressBar.GetComponent<RectTransform>().localScale =new Vector3(cardQuestionCorrect/cardQuestionsTotal, 1,1) ;
+        float a = (float)cardQuestionsCounter / cardQuestionsTotal;
+        UIManager.Instance.ProgressBar.transform.GetChild(0).GetComponent<RectTransform>().localScale =new Vector3(a, 1,1) ;
+        UIManager.Instance.ProgressBar.transform.GetChild(1).GetComponent<Text>().text = cardQuestionsCounter.ToString();
+        UIManager.Instance.ProgressBar.transform.GetChild(2).GetComponent<Text>().text = cardQuestionsCounter + "/" + cardQuestionsTotal;
         yield return new WaitForSeconds(3f);
         NextGame();
     }
@@ -1271,6 +1273,10 @@ public class CardsManager : MonoBehaviour
     {
        if(isStates == "isCardTest")
         {
+            float a = (float)cardQuestionsCounter / cardQuestionsTotal;
+            UIManager.Instance.ProgressBar.transform.GetChild(0).GetComponent<RectTransform>().localScale = new Vector3(a, 1, 1);
+            UIManager.Instance.ProgressBar.transform.GetChild(1).GetComponent<Text>().text = cardQuestionsCounter.ToString();
+            UIManager.Instance.ProgressBar.transform.GetChild(2).GetComponent<Text>().text = cardQuestionsCounter + "/" + cardQuestionsTotal;
             CancelInvoke("Timer");
             StartCoroutine("NextGameAfterTimerWrong");
             UIManager.Instance.DisableCardBtns();

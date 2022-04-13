@@ -40,6 +40,7 @@ public class UIManager : MonoBehaviour
     public Image ProgressBar;
     public GameObject ResultPanel;
 
+    
     private void Awake()
     {
         if (Instance != null && Instance != this)
