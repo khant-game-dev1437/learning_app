@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -39,8 +41,16 @@ public class UIManager : MonoBehaviour
 
     public Image ProgressBar;
     public GameObject ResultPanel;
+    public Image ResultPanelProgressBar;
+    public Button BtnBackToMenu;
+    public GameObject CirleResult;
 
-    
+    public Button CardTutorial;
+    public GameObject CardVideos;
+    public GameObject CardGame;
+
+    public Button btnQuit;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -70,12 +80,31 @@ public class UIManager : MonoBehaviour
         btnBankerWins.onClick.AddListener(delegate { CardsManager.Instance.CheckTrueOrFalseWinner(btnBankerWins.gameObject.transform.GetChild(0).GetComponent<Text>().text); });
         btnPlayerWins.onClick.AddListener(delegate { CardsManager.Instance.CheckTrueOrFalseWinner(btnPlayerWins.gameObject.transform.GetChild(0).GetComponent<Text>().text); });
         btnTie.onClick.AddListener(delegate { CardsManager.Instance.CheckTrueOrFalseWinner(btnTie.gameObject.transform.GetChild(0).GetComponent<Text>().text); });
+
+        CardTutorial.onClick.AddListener(ShowCardVideos);
+        BtnBackToMenu.onClick.AddListener(ShowMenu);
+        btnQuit.onClick.AddListener(QuitGame);
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+    public void QuitGame()
+    {
+        Debug.Log("Quit");
+        Application.Quit();
+    }
+
+    public void ShowMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
+    public void ShowCardVideos()
+    {
+        CardVideos.SetActive(true);
+        MainMenu.SetActive(false);
     }
 
     public void NameBtn()

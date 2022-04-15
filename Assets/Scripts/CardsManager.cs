@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using Michsky.UI.ModernUIPack;
 
 public class CardsManager : MonoBehaviour
 {
@@ -42,16 +44,26 @@ public class CardsManager : MonoBehaviour
     public int counter = 0;
     public int bankerCounter = 0;
 
+    [HideInInspector]
     public bool player3rdCounter = false;
+    [HideInInspector]
     public bool banker3rdCounter = false;
 
     private bool isBankerDrawed = true;
     private bool isPlayerDrawed = true;
+
+    [HideInInspector]
     public string isStates = string.Empty;
+
+    [HideInInspector]
     public int practice = 0;
 
     public int cardQuestionsTotal = 2;
+
+    [HideInInspector]
     public int cardQuestionsCounter = 0;
+
+    [HideInInspector]
     public int cardQuestionCorrect = 0;
 
     List<int> CardsList = new List<int>();
@@ -66,12 +78,15 @@ public class CardsManager : MonoBehaviour
     List<string> Card9 = new List<string>();
     List<string> Card10 = new List<string>();
 
+    [HideInInspector]
     public List<int> Player = new List<int>();
+    [HideInInspector]
     public List<int> Banker = new List<int>();
 
 
     private void Awake()
     {
+        LoadAllResources();
         if (Instance != null && Instance != this)
         {
             Destroy(this);
@@ -85,11 +100,7 @@ public class CardsManager : MonoBehaviour
     void Start()
     {
         Screen.orientation = ScreenOrientation.LandscapeRight;
-        LoadAllResources();
-        CardsAddToList();
-        CardsMatchWithSprites();
-        InvokeRepeating("CreateCards", 0.5f, 0.5f);
-        UIManager.Instance.ProgressBar.transform.GetChild(1).GetComponent<Text>().text = cardQuestionsCounter.ToString();
+       Ready();
     }
 
     // Update is called once per frame
@@ -98,6 +109,13 @@ public class CardsManager : MonoBehaviour
 
     }
 
+    public void Ready()
+    {
+        CardsAddToList();
+        CardsMatchWithSprites();
+        InvokeRepeating("CreateCards", 0.5f, 0.5f);
+        UIManager.Instance.ProgressBar.transform.GetChild(1).GetComponent<Text>().text = cardQuestionsCounter.ToString();
+    }
     public int GetCardNumber()
     {
         int generateNumber = Random.Range(1, CardsList.Count);
@@ -860,6 +878,11 @@ public class CardsManager : MonoBehaviour
     }
     public void NextGame()
     {
+        //if(cardQuestionsCounter == cardQuestionsTotal)
+        //{
+        //    UIManager.Instance.ResultPanel.SetActive(true);
+        //    return;
+        //}
         UIManager.Instance.ActiveCardBtns();
         UIManager.Instance.WinOrLose_Txt.text = string.Empty;
         UIManager.Instance.Wrong_Txt.text = string.Empty;
@@ -1149,9 +1172,9 @@ public class CardsManager : MonoBehaviour
         timer--;
     }
 
+
     public void checkCardsPracOrTest(string checkCardExam)
     {
-        AchievementManager.Instance.CardGame.SetActive(true);
         Debug.Log("CardNo Ha : " + cardQuestionsTotal);
         isStates = checkCardExam;
 
@@ -1160,10 +1183,15 @@ public class CardsManager : MonoBehaviour
             if (cardQuestionsCounter == cardQuestionsTotal)
             {
                 Debug.Log("Pyae Twr p ha, checkCardsPracOrTest () : "+ cardQuestionsTotal);
-                StopAllCoroutines();
-                CancelInvoke("Timer");
-                CancelInvoke();
+                //StopAllCoroutines();
+                //CancelInvoke();
+                float a = (float)cardQuestionCorrect / cardQuestionsTotal;
                 UIManager.Instance.ResultPanel.SetActive(true);
+                UIManager.Instance.ResultPanelProgressBar.transform.GetChild(0).GetComponent<RectTransform>().localScale = new Vector3(a, 1, 1);
+                UIManager.Instance.ResultPanelProgressBar.transform.GetChild(1).GetComponent<Text>().text = cardQuestionCorrect + " questions correct in " + cardQuestionsTotal;
+                float percent = a * 100;
+                UIManager.Instance.CirleResult.transform.GetChild(0).GetChild(0).GetComponent<Image>().fillAmount = a;
+                UIManager.Instance.CirleResult.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = percent.ToString() + "%";
                 return;
             }
             cardQuestionsCounter++;
@@ -1273,6 +1301,8 @@ public class CardsManager : MonoBehaviour
     {
        if(isStates == "isCardTest")
         {
+            //StopAllCoroutines();
+            //CancelInvoke();
             float a = (float)cardQuestionsCounter / cardQuestionsTotal;
             UIManager.Instance.ProgressBar.transform.GetChild(0).GetComponent<RectTransform>().localScale = new Vector3(a, 1, 1);
             UIManager.Instance.ProgressBar.transform.GetChild(1).GetComponent<Text>().text = cardQuestionsCounter.ToString();
