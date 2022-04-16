@@ -9,25 +9,32 @@ public class UIManager : MonoBehaviour
 {
 
     public static UIManager Instance { get; private set; }
-
-    [SerializeField]
+    
     // Register GameObject
     public GameObject Register;
     public InputField Name_Input;
     public Button Name_Btn;
-    public Button btnBankerThird;
-    public Button btnPlayerThird;
-    public Button btnNextGame;
-    public Button btnCardEach;
 
-    public Button btnPlayerWins;
-    public Button btnBankerWins;
-    public Button btnTie;
+    //CardGame
+    //public Button btnBankerThird;
+    //public Button btnPlayerThird;
+    //public Button btnNextGame;
+    //public Button btnCardEach;
+    //public Button btnPlayerWins;
+    //public Button btnBankerWins;
+    //public Button btnTie;
+    //public Text WinOrLose_Txt;
+    //public Text Wrong_Txt;
+    //public Text cardTimer_Txt;
+    //public GameObject imgCross;
+    //public Image ProgressBar;
+    //public GameObject ResultPanel;
+    //public Image ResultPanelProgressBar;
+    //public Button BtnBackToMenu;
+    //public GameObject CirleResult;
 
     public Text Name_Txt;
-    public Text WinOrLose_Txt;
-    public Text Wrong_Txt;
-    public Text cardTimer_Txt;
+    
     // MainMenu GameObject
     public GameObject MainMenu;
 
@@ -37,53 +44,42 @@ public class UIManager : MonoBehaviour
     public GameObject OverAll;
     public GameObject MenuCategories;
 
-    public GameObject imgCross;
 
-    public Image ProgressBar;
-    public GameObject ResultPanel;
-    public Image ResultPanelProgressBar;
-    public Button BtnBackToMenu;
-    public GameObject CirleResult;
 
     public Button CardTutorial;
     public GameObject CardVideos;
-    public GameObject CardGame;
-
-    public Button btnQuit;
+    
+    
 
     private void Awake()
     {
         if (Instance != null && Instance != this)
         {
-            Destroy(this);
+            Destroy(this.gameObject);
         }
         else
         {
             Instance = this;
+            DontDestroyOnLoad(this.gameObject);
         }
     }
 
     void Start()
     {
-        cardTimer_Txt.gameObject.SetActive(false);
-        imgCross.SetActive(false);
-        btnBankerThird.gameObject.SetActive(false);
-        btnPlayerThird.gameObject.SetActive(false);
-        btnCardEach.gameObject.SetActive(false);
-        btnNextGame.gameObject.SetActive(false);
-        btnBankerWins.gameObject.SetActive(false);
-        btnPlayerWins.gameObject.SetActive(false);
-        btnTie.gameObject.SetActive(false);
+        
 
         MainMenu.SetActive(false);
         //StartCoroutine(ActiveCardButtons());
-        btnBankerWins.onClick.AddListener(delegate { CardsManager.Instance.CheckTrueOrFalseWinner(btnBankerWins.gameObject.transform.GetChild(0).GetComponent<Text>().text); });
-        btnPlayerWins.onClick.AddListener(delegate { CardsManager.Instance.CheckTrueOrFalseWinner(btnPlayerWins.gameObject.transform.GetChild(0).GetComponent<Text>().text); });
-        btnTie.onClick.AddListener(delegate { CardsManager.Instance.CheckTrueOrFalseWinner(btnTie.gameObject.transform.GetChild(0).GetComponent<Text>().text); });
-
+        
         CardTutorial.onClick.AddListener(ShowCardVideos);
-        BtnBackToMenu.onClick.AddListener(ShowMenu);
-        btnQuit.onClick.AddListener(QuitGame);
+        
+       
+    }
+
+    public void CloseAllUI()
+    {
+        Register.SetActive(false);
+        MainMenu.SetActive(false);
     }
 
     // Update is called once per frame
@@ -91,16 +87,13 @@ public class UIManager : MonoBehaviour
     {
         
     }
-    public void QuitGame()
-    {
-        Debug.Log("Quit");
-        Application.Quit();
-    }
+    
 
-    public void ShowMenu()
-    {
-        SceneManager.LoadScene(0);
-    }
+    //public void ShowMenu()
+    //{
+    //    Register.SetActive(false);
+    //    MainMenu.SetActive(true);
+    //}
     public void ShowCardVideos()
     {
         CardVideos.SetActive(true);
@@ -138,67 +131,67 @@ public class UIManager : MonoBehaviour
         MenuCategories.SetActive(false);
     }
 
-    public void CloseBankerThirdButton()
-    {
-        btnBankerThird.interactable = false;
-    }
+    //public void CloseBankerThirdButton()
+    //{
+    //    btnBankerThird.interactable = false;
+    //}
 
-    public void ClosePlayerThirdButton()
-    {
-        btnPlayerThird.interactable = false;
-    }
+    //public void ClosePlayerThirdButton()
+    //{
+    //    btnPlayerThird.interactable = false;
+    //}
 
-    public void CloseBtnsInNextGame()
-    {
-        btnBankerThird.gameObject.SetActive(false);
-        btnPlayerThird.gameObject.SetActive(false);
-        btnNextGame.gameObject.SetActive(false);
-        WinOrLose_Txt.gameObject.SetActive(false);
-        btnCardEach.gameObject.SetActive(false);
-        btnBankerWins.gameObject.SetActive(false);
-        btnPlayerWins.gameObject.SetActive(false);
-        btnTie.gameObject.SetActive(false);
-        imgCross.SetActive(false);
-    }
-    public IEnumerator ActiveCardButtons()
-    {
-        yield return new WaitForSeconds(1.5f);
-        btnBankerThird.gameObject.SetActive(true);
-        btnPlayerThird.gameObject.SetActive(true);
-        btnNextGame.gameObject.SetActive(true);
-        WinOrLose_Txt.gameObject.SetActive(true);
-        btnCardEach.gameObject.SetActive(true);
-        btnBankerWins.gameObject.SetActive(true);
-        btnPlayerWins.gameObject.SetActive(true);
-        btnTie.gameObject.SetActive(true);
-        if (CardsManager.Instance.isStates == "isCardTest")
-        {
-            btnNextGame.gameObject.SetActive(false);
-        } else
-        {
-            btnNextGame.gameObject.SetActive(true);
-        }
+    //public void CloseBtnsInNextGame()
+    //{
+    //    btnBankerThird.gameObject.SetActive(false);
+    //    btnPlayerThird.gameObject.SetActive(false);
+    //    btnNextGame.gameObject.SetActive(false);
+    //    WinOrLose_Txt.gameObject.SetActive(false);
+    //    btnCardEach.gameObject.SetActive(false);
+    //    btnBankerWins.gameObject.SetActive(false);
+    //    btnPlayerWins.gameObject.SetActive(false);
+    //    btnTie.gameObject.SetActive(false);
+    //    imgCross.SetActive(false);
+    //}
+    //public IEnumerator ActiveCardButtons()
+    //{
+    //    yield return new WaitForSeconds(1.5f);
+    //    btnBankerThird.gameObject.SetActive(true);
+    //    btnPlayerThird.gameObject.SetActive(true);
+    //    btnNextGame.gameObject.SetActive(true);
+    //    WinOrLose_Txt.gameObject.SetActive(true);
+    //    btnCardEach.gameObject.SetActive(true);
+    //    btnBankerWins.gameObject.SetActive(true);
+    //    btnPlayerWins.gameObject.SetActive(true);
+    //    btnTie.gameObject.SetActive(true);
+    //    if (CardsManager.Instance.isStates == "isCardTest")
+    //    {
+    //        btnNextGame.gameObject.SetActive(false);
+    //    } else
+    //    {
+    //        btnNextGame.gameObject.SetActive(true);
+    //    }
 
-        //ActiveCardBtns();
-    }
+    //    //ActiveCardBtns();
+    //}
 
-    public void DisableCardBtns()
-    {
-        btnBankerThird.interactable = false;
-        btnPlayerThird.interactable = false;
-        btnCardEach.interactable = false;
-        btnBankerWins.interactable = false;
-        btnPlayerWins.interactable = false;
-        btnTie.interactable = false;
-    }
+    //public void DisableCardBtns()
+    //{
+    //    btnBankerThird.interactable = false;
+    //    btnPlayerThird.interactable = false;
+    //    btnCardEach.interactable = false;
+    //    btnBankerWins.interactable = false;
+    //    btnPlayerWins.interactable = false;
+    //    btnTie.interactable = false;
+    //}
 
-    public void ActiveCardBtns()
-    {
-        btnBankerThird.interactable = true;
-        btnPlayerThird.interactable = true;
-        btnCardEach.interactable = true;
-        btnBankerWins.interactable = true;
-        btnPlayerWins.interactable = true;
-        btnTie.interactable = true;
-    }
+    //public void ActiveCardBtns()
+    //{
+    //    btnBankerThird.interactable = true;
+    //    btnPlayerThird.interactable = true;
+    //    btnCardEach.interactable = true;
+    //    btnBankerWins.interactable = true;
+    //    btnPlayerWins.interactable = true;
+    //    btnTie.interactable = true;
+    //}
 }

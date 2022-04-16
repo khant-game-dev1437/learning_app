@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
 public class AchievementManager : MonoBehaviour
 {
     public static AchievementManager Instance { get; private set; }
@@ -31,10 +33,10 @@ public class AchievementManager : MonoBehaviour
         //btn_Practice.interactable = false;
         //btn_Deal.interactable = false;
         //btn_CardPractice.onClick.AddListener(Hi);
-        btn_CardPractice.onClick.AddListener(btnCardPractice);
-        btn_CardDeal.onClick.AddListener(btnCardPractice);
-        btn_CardPractice.onClick.AddListener(delegate { CardsManager.Instance.checkCardsPracOrTest("isPractice"); });
-        btn_CardDeal.onClick.AddListener(delegate { CardsManager.Instance.checkCardsPracOrTest("isCardTest"); });
+        //btn_CardPractice.onClick.AddListener(btnCardPractice);
+        //btn_CardDeal.onClick.AddListener(btnCardPractice);
+        btn_CardPractice.onClick.AddListener(delegate { SceneManager.LoadScene("CardPrac"); });
+        btn_CardDeal.onClick.AddListener(delegate { SceneManager.LoadScene("CardTest"); });
     }
 
     // Update is called once per frame
