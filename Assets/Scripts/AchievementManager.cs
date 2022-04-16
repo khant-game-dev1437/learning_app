@@ -11,8 +11,8 @@ public class AchievementManager : MonoBehaviour
     public GameObject CardGame;
     public GameObject ChipsGame;
 
-    public Button btn_CardPractice;
-    public Button btn_CardDeal;
+    //public Button btn_CardPractice;
+    //public Button btn_CardDeal;
 
     Achievements achievement = new Achievements();
     
@@ -35,8 +35,8 @@ public class AchievementManager : MonoBehaviour
         //btn_CardPractice.onClick.AddListener(Hi);
         //btn_CardPractice.onClick.AddListener(btnCardPractice);
         //btn_CardDeal.onClick.AddListener(btnCardPractice);
-        btn_CardPractice.onClick.AddListener(delegate { SceneManager.LoadScene("CardPrac"); });
-        btn_CardDeal.onClick.AddListener(delegate { SceneManager.LoadScene("CardTest"); });
+        //btn_CardPractice.onClick.AddListener(delegate { SceneManager.LoadScene("CardPrac"); });
+        //btn_CardDeal.onClick.AddListener(delegate { SceneManager.LoadScene("CardTest"); });
     }
 
     // Update is called once per frame
@@ -50,7 +50,7 @@ public class AchievementManager : MonoBehaviour
     {
         
         //achievement.cards_practice = 1;
-        btn_CardPractice.interactable = true;
+        //btn_CardPractice.interactable = true;
         CardGame.SetActive(true);
         UIManager.Instance.Register.SetActive(false);
         UIManager.Instance.MainMenu.SetActive(false);
@@ -59,7 +59,7 @@ public class AchievementManager : MonoBehaviour
     public void btnDeal()
     {
         achievement.cards_deal = 1;
-        btn_CardDeal.interactable = true;
+        //btn_CardDeal.interactable = true;
     }
 }
 

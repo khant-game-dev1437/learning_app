@@ -14,24 +14,10 @@ public class UIManager : MonoBehaviour
     public GameObject Register;
     public InputField Name_Input;
     public Button Name_Btn;
+    public Button BtnTutorialMainMenu;
 
-    //CardGame
-    //public Button btnBankerThird;
-    //public Button btnPlayerThird;
-    //public Button btnNextGame;
-    //public Button btnCardEach;
-    //public Button btnPlayerWins;
-    //public Button btnBankerWins;
-    //public Button btnTie;
-    //public Text WinOrLose_Txt;
-    //public Text Wrong_Txt;
-    //public Text cardTimer_Txt;
-    //public GameObject imgCross;
-    //public Image ProgressBar;
-    //public GameObject ResultPanel;
-    //public Image ResultPanelProgressBar;
-    //public Button BtnBackToMenu;
-    //public GameObject CirleResult;
+    public Button btn_CardPractice;
+    public Button btn_CardDeal;
 
     public Text Name_Txt;
     
@@ -48,9 +34,10 @@ public class UIManager : MonoBehaviour
 
     public Button CardTutorial;
     public GameObject CardVideos;
-    
-    
 
+    public GameObject CardRulePanel;
+    public GameObject CardRulePracPanel;
+    
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -66,16 +53,35 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
-        
+        btn_CardPractice.onClick.AddListener(delegate { StartCoroutine(ShowCardRulePracPanel()); });
+        btn_CardDeal.onClick.AddListener(delegate { SceneManager.LoadScene("CardTest"); });
 
         MainMenu.SetActive(false);
         //StartCoroutine(ActiveCardButtons());
-        
-        CardTutorial.onClick.AddListener(ShowCardVideos);
-        
-       
+        CardTutorial.onClick.AddListener(delegate { StartCoroutine(ShowCardRulePanel()); });
     }
 
+    public IEnumerator ShowCardRulePracPanel()
+    {
+        CardRulePracPanel.SetActive(true);
+        yield return new WaitForSeconds(3f);
+        SceneManager.LoadScene("CardPrac");
+        //CardRulePracPanel.SetActive(false);
+    }
+
+    public void ShowBtnTutorialMainMenu()
+    {
+        CardVideos.SetActive(false);
+        ShowMenu();
+    }
+
+    public IEnumerator ShowCardRulePanel()
+    {
+        CardRulePanel.SetActive(true);
+        yield return new WaitForSeconds(3f);
+        CardRulePanel.SetActive(false);
+        ShowCardVideos();
+    }
     public void CloseAllUI()
     {
         Register.SetActive(false);
@@ -87,13 +93,13 @@ public class UIManager : MonoBehaviour
     {
         
     }
-    
 
-    //public void ShowMenu()
-    //{
-    //    Register.SetActive(false);
-    //    MainMenu.SetActive(true);
-    //}
+
+    public void ShowMenu()
+    {
+        Register.SetActive(false);
+        MainMenu.SetActive(true);
+    }
     public void ShowCardVideos()
     {
         CardVideos.SetActive(true);

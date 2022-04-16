@@ -30,8 +30,9 @@ public class CardsManager : MonoBehaviour
     public Button BtnBackToMenu;
     public GameObject CirleResult;
 
-
-
+    [SerializeField]
+    private int UnlockCardGame = 0;
+    private int UnlockCardGameCounter = 0;
 
     public string cardStates = string.Empty;
 
@@ -145,13 +146,14 @@ public class CardsManager : MonoBehaviour
 
     public void QuitGame()
     {
-        Debug.Log("Quit");
         Application.Quit();
     }
 
     public void ShowMenu()
     {
         SceneManager.LoadScene("SampleScene");
+        UIManager.Instance.Register.SetActive(false);
+        UIManager.Instance.MainMenu.SetActive(true);
     }
 
     public void DisableCardBtns()
@@ -1231,6 +1233,7 @@ public class CardsManager : MonoBehaviour
                 DisableCardBtns();
                 WinOrLose_Txt.text = winnerName;
                 Wrong_Txt.text = "Correct";
+               
                 CancelInvoke("Timer");
                 StartCoroutine("NextGameAfterTimer");
             } else if(isBankerDraw != true && isPlayerDraw != true)
@@ -1239,6 +1242,7 @@ public class CardsManager : MonoBehaviour
                 Debug.Log("WTF DOG");
                 WinOrLose_Txt.text = winnerName;
                 Wrong_Txt.text = "Correct";
+                
                 CancelInvoke("Timer");
                 StartCoroutine("NextGameAfterTimer");
             }
@@ -1257,6 +1261,7 @@ public class CardsManager : MonoBehaviour
                 WinOrLose_Txt.text = winnerName;
                 Wrong_Txt.text = "Correct";
                 //UIManager.Instance.imgCross.SetActive(true);
+                
                 CancelInvoke("Timer");
                 StartCoroutine("NextGameAfterTimer");
             }
@@ -1265,6 +1270,7 @@ public class CardsManager : MonoBehaviour
                 DisableCardBtns();
                 WinOrLose_Txt.text = winnerName;
                 Wrong_Txt.text = "Correct";
+                
                 CancelInvoke("Timer");
                 StartCoroutine("NextGameAfterTimer");
                 //UIManager.Instance.imgCross.SetActive(true);
@@ -1293,15 +1299,13 @@ public class CardsManager : MonoBehaviour
     {
         Debug.Log("CardNo Ha : " + cardQuestionsTotal);
         cardStates = checkCardExam;
-
+       
         if (cardStates == "isCardTest")
         {   
             if (cardQuestionsCounter == cardQuestionsTotal)
             {
                 Debug.Log("Pyae Twr p ha, checkCardsPracOrTest () : "+ cardQuestionsTotal);
-                //StopAllCoroutines();
-                //CancelInvoke();
-                float a = (float)cardQuestionCorrect / cardQuestionsTotal;
+               float a = (float)cardQuestionCorrect / cardQuestionsTotal;
                ResultPanel.SetActive(true);
                ResultPanelProgressBar.transform.GetChild(0).GetComponent<RectTransform>().localScale = new Vector3(a, 1, 1);
                ResultPanelProgressBar.transform.GetChild(1).GetComponent<Text>().text = cardQuestionCorrect + " questions correct in " + cardQuestionsTotal;
@@ -1313,17 +1317,42 @@ public class CardsManager : MonoBehaviour
             cardQuestionsCounter++;
             InvokeRepeating("Timer", 1f, 1f);
         } 
+        //if(cardStates == "isPractice")
+        //{
+        //    checkPrac();
+        //}
     }
 
+    public void checkPrac()
+    {
+        if(cardStates == "isPractice")
+        {
+            UnlockCardGameCounter++;
+            ProgressBar.transform.GetChild(0).GetComponent<RectTransform>().localScale = new Vector3((float)UnlockCardGameCounter / (float)UnlockCardGame, 1, 1);
+            ProgressBar.transform.GetChild(1).GetComponent<Text>().text = UnlockCardGame.ToString();
+            ProgressBar.transform.GetChild(2).GetComponent<Text>().text = UnlockCardGameCounter + "/" + UnlockCardGame;
+            if (UnlockCardGameCounter == UnlockCardGame)
+            {
+                // Back to Menu While Games Complete
+                ShowMenu();
+            }
+        }
+    }
     public IEnumerator NextGameAfterTimer()
     {
-        cardQuestionCorrect++;
-        float a = (float)cardQuestionsCounter / cardQuestionsTotal;
-        ProgressBar.transform.GetChild(0).GetComponent<RectTransform>().localScale =new Vector3(a, 1,1) ;
-        ProgressBar.transform.GetChild(1).GetComponent<Text>().text = cardQuestionsCounter.ToString();
-        ProgressBar.transform.GetChild(2).GetComponent<Text>().text = cardQuestionsCounter + "/" + cardQuestionsTotal;
-        yield return new WaitForSeconds(3f);
-        NextGame();
+        if(cardStates == "isPractice")
+        {
+            checkPrac();
+        } else if (cardStates == "isCardTest")
+        {
+            cardQuestionCorrect++;
+            float a = (float)cardQuestionsCounter / cardQuestionsTotal;
+            ProgressBar.transform.GetChild(0).GetComponent<RectTransform>().localScale = new Vector3(a, 1, 1);
+            ProgressBar.transform.GetChild(1).GetComponent<Text>().text = cardQuestionsCounter.ToString();
+            ProgressBar.transform.GetChild(2).GetComponent<Text>().text = cardQuestionsCounter + "/" + cardQuestionsTotal;
+            yield return new WaitForSeconds(3f);
+            NextGame();
+        }
     }
 
     public IEnumerator NextGameAfterTimerWrong()

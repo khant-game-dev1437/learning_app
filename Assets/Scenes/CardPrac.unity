@@ -134,6 +134,10 @@ PrefabInstance:
       propertyPath: cardStates
       value: isPractice
       objectReference: {fileID: 0}
+    - target: {fileID: 1309733108214304597, guid: 65808d3196329ac4e94eb3bf6d3203cc, type: 3}
+      propertyPath: UnlockCardGame
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 1309733108756964552, guid: 65808d3196329ac4e94eb3bf6d3203cc, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
