@@ -30,14 +30,18 @@ public class UIManager : MonoBehaviour
     public GameObject OverAll;
     public GameObject MenuCategories;
 
-
-
+    
     public Button CardTutorial;
     public GameObject CardVideos;
 
     public GameObject CardRulePanel;
     public GameObject CardRulePracPanel;
-    
+    public GameObject CardPracWelcome;
+
+    public GameObject CardTestPanel;
+    public Text NumberOfQues;
+    public Text Timer;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -54,7 +58,7 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         btn_CardPractice.onClick.AddListener(delegate { StartCoroutine(ShowCardRulePracPanel()); });
-        btn_CardDeal.onClick.AddListener(delegate { SceneManager.LoadScene("CardTest"); });
+        btn_CardDeal.onClick.AddListener(delegate { StartTestPrac(); });
 
         MainMenu.SetActive(false);
         //StartCoroutine(ActiveCardButtons());
@@ -63,10 +67,47 @@ public class UIManager : MonoBehaviour
 
     public IEnumerator ShowCardRulePracPanel()
     {
-        CardRulePracPanel.SetActive(true);
+        CardPracWelcome.SetActive(true);
         yield return new WaitForSeconds(3f);
         SceneManager.LoadScene("CardPrac");
+        yield return new WaitForSeconds(0.1f);
+        CardPracWelcome.SetActive(false);
+
+        //MainMenu.transform.GetChild(3).gameObject.SetActive(true);
         //CardRulePracPanel.SetActive(false);
+    }
+
+    public void HideCardTestPanel()
+    {
+        CardTestPanel.SetActive(false);
+        ShowMenu();
+    }
+
+    public void StartTestPrac()
+    {
+        SceneManager.LoadScene("CardTest");
+        Debug.Log("Lee");
+        SceneManager.LoadScene("SampleScene");
+
+        StartCoroutine(DelayTestPanel());
+    }
+
+    public IEnumerator DelayTestPanel()
+    {
+        yield return new WaitForSeconds(0.5f);
+        CardTestPanel.SetActive(true);
+        NumberOfQues.text = CardsManager.cardQuesTotal.ToString();
+        Timer.text = CardsManager.saveTimer.ToString();
+    }
+
+    public void StartTest()
+    {
+        SceneManager.LoadScene("CardTest");
+        CardTestPanel.SetActive(false);
+    }
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 
     public void ShowBtnTutorialMainMenu()
@@ -94,6 +135,18 @@ public class UIManager : MonoBehaviour
         
     }
 
+    public void ShowMenuCardPrac()
+    {
+        CardRulePracPanel.SetActive(false);
+        Register.SetActive(false);
+        MainMenu.SetActive(true);
+    }
+
+    public void PracticeAgain()
+    {
+        SceneManager.LoadScene("CardPrac");
+        CardRulePracPanel.SetActive(false);
+    }
 
     public void ShowMenu()
     {

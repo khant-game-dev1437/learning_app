@@ -29,11 +29,13 @@ public class CardsManager : MonoBehaviour
     public Image ResultPanelProgressBar;
     public Button BtnBackToMenu;
     public GameObject CirleResult;
+    public GameObject FailTest;
 
     [SerializeField]
     private int UnlockCardGame = 0;
     private int UnlockCardGameCounter = 0;
-
+    [HideInInspector]
+    public static int saveTimer = 0;
     public string cardStates = string.Empty;
 
     Vector2 playerStartPos;
@@ -66,7 +68,7 @@ public class CardsManager : MonoBehaviour
     private int gameObjectsCounter = 0;
     private int beforeBankerTotal = -1;
     private int beforePlayerTotal = 0;
-    public int timer = 20;
+    public int timer = 0;
 
     public int counter = 0;
     public int bankerCounter = 0;
@@ -84,6 +86,7 @@ public class CardsManager : MonoBehaviour
     public int practice = 0;
 
     public int cardQuestionsTotal = 2;
+    public static int cardQuesTotal;
 
     [HideInInspector]
     public int cardQuestionsCounter = 0;
@@ -111,6 +114,9 @@ public class CardsManager : MonoBehaviour
 
     private void Awake()
     {
+        cardQuesTotal = cardQuestionsTotal;
+        saveTimer = timer;
+        Debug.Log("QUES TOTAL" + cardQuesTotal);
         LoadAllResources();
         if (Instance != null && Instance != this)
         {
@@ -124,6 +130,7 @@ public class CardsManager : MonoBehaviour
 
     void Start()
     {
+        
         btnQuit.onClick.AddListener(QuitGame);
         cardTimer_Txt.gameObject.SetActive(false);
         imgCross.SetActive(false);
@@ -154,6 +161,8 @@ public class CardsManager : MonoBehaviour
         SceneManager.LoadScene("SampleScene");
         UIManager.Instance.Register.SetActive(false);
         UIManager.Instance.MainMenu.SetActive(true);
+        UIManager.Instance.CardRulePracPanel.SetActive(false);
+        UIManager.Instance.MainMenu.transform.GetChild(3).gameObject.SetActive(true);
     }
 
     public void DisableCardBtns()
@@ -1038,7 +1047,7 @@ public class CardsManager : MonoBehaviour
         beforeBankerTotal = -1;
         beforePlayerTotal = 0;
         //isGameFinished = false;
-        timer = 20;
+        timer = saveTimer;
         checkCardsPracOrTest(cardStates);
         CardsAddToList();
         CardsMatchWithSprites();
@@ -1306,12 +1315,24 @@ public class CardsManager : MonoBehaviour
             {
                 Debug.Log("Pyae Twr p ha, checkCardsPracOrTest () : "+ cardQuestionsTotal);
                float a = (float)cardQuestionCorrect / cardQuestionsTotal;
-               ResultPanel.SetActive(true);
-               ResultPanelProgressBar.transform.GetChild(0).GetComponent<RectTransform>().localScale = new Vector3(a, 1, 1);
-               ResultPanelProgressBar.transform.GetChild(1).GetComponent<Text>().text = cardQuestionCorrect + " questions correct in " + cardQuestionsTotal;
                 float percent = a * 100;
-               CirleResult.transform.GetChild(0).GetChild(0).GetComponent<Image>().fillAmount = a;
-               CirleResult.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = percent.ToString() + "%";
+                
+                if(percent < 90)
+                {
+                    FailTest.SetActive(true);
+                    FailTest.transform.GetChild(2).GetChild(0).GetChild(0).GetComponent<Image>().fillAmount = a;
+                    FailTest.transform.GetChild(2).GetChild(1).GetComponent<TextMeshProUGUI>().text = percent.ToString() + "%";
+                    ResultPanel.SetActive(false);
+                } else
+                {
+                    ResultPanel.SetActive(true);
+                    ResultPanelProgressBar.transform.GetChild(0).GetComponent<RectTransform>().localScale = new Vector3(a, 1, 1);
+                    ResultPanelProgressBar.transform.GetChild(1).GetComponent<Text>().text = cardQuestionCorrect + " questions correct in " + cardQuestionsTotal;
+
+                    CirleResult.transform.GetChild(0).GetChild(0).GetComponent<Image>().fillAmount = a;
+                    CirleResult.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = percent.ToString() + "%";
+                    FailTest.SetActive(false);
+                }
                 return;
             }
             cardQuestionsCounter++;
@@ -1333,8 +1354,10 @@ public class CardsManager : MonoBehaviour
             ProgressBar.transform.GetChild(2).GetComponent<Text>().text = UnlockCardGameCounter + "/" + UnlockCardGame;
             if (UnlockCardGameCounter == UnlockCardGame)
             {
-                // Back to Menu While Games Complete
-                ShowMenu();
+                SceneManager.LoadScene("SampleScene");
+                UIManager.Instance.CardPracWelcome.SetActive(false);
+                UIManager.Instance.CardRulePracPanel.SetActive(true);
+                UnlockCardGameCounter = 0;
             }
         }
     }
