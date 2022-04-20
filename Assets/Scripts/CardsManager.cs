@@ -1469,8 +1469,7 @@ public class CardsManager : MonoBehaviour
     {
        if(cardStates == "isCardTest")
         {
-            //StopAllCoroutines();
-            //CancelInvoke();
+            Debug.Log("Lee tway phyit p");
             float a = (float)cardQuestionsCounter / cardQuestionsTotal;
             ProgressBar.transform.GetChild(0).GetComponent<RectTransform>().localScale = new Vector3(a, 1, 1);
             ProgressBar.transform.GetChild(1).GetComponent<Text>().text = cardQuestionsCounter.ToString();

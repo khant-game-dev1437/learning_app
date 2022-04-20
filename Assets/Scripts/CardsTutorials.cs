@@ -6,14 +6,17 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class CardsTutorials : MonoBehaviour, IDragHandler, IPointerDownHandler
-{   
+{
     [SerializeField]
     public VideoPlayer VideoTex;
     public Image progressBar;
 
-    private VideoClip[] cardTutos;     
+    [SerializeField]
+    private GameObject FinishedPanel;
+
+    private VideoClip[] cardTutos;
     private List<string> cardVideos = new List<string>();
-    
+
     private int VideosCounter = 0;
 
     private void Awake()
@@ -21,13 +24,13 @@ public class CardsTutorials : MonoBehaviour, IDragHandler, IPointerDownHandler
         LoadAllCardVideos();
     }
 
-    
+
     void Start()
     {
         //PlayVideo();
     }
 
-    
+
     void Update()
     {
         if (VideoTex.frameCount > 0)
@@ -38,7 +41,7 @@ public class CardsTutorials : MonoBehaviour, IDragHandler, IPointerDownHandler
 
     public void OnDrag(PointerEventData eventData)
     {
-        SkipVideo(eventData);    
+        SkipVideo(eventData);
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -49,7 +52,7 @@ public class CardsTutorials : MonoBehaviour, IDragHandler, IPointerDownHandler
     private void SkipVideo(PointerEventData eventData)
     {
         Vector2 localPoint;
-        if(RectTransformUtility.ScreenPointToLocalPointInRectangle(progressBar.rectTransform, eventData.position, null,out localPoint))
+        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(progressBar.rectTransform, eventData.position, null, out localPoint))
         {
             float percentage = Mathf.InverseLerp(progressBar.rectTransform.rect.xMin, progressBar.rectTransform.rect.xMax, localPoint.x);
             SkipToPercent(percentage);
@@ -73,9 +76,9 @@ public class CardsTutorials : MonoBehaviour, IDragHandler, IPointerDownHandler
     public void PlayVideo()
     {
         Debug.Log("WT" + VideosCounter);
-        foreach(VideoClip i in cardTutos)
+        foreach (VideoClip i in cardTutos)
         {
-            if(i.name == cardVideos[VideosCounter])
+            if (i.name == cardVideos[VideosCounter])
             {
                 VideoTex.GetComponent<VideoPlayer>().clip = i;
             }
@@ -85,26 +88,21 @@ public class CardsTutorials : MonoBehaviour, IDragHandler, IPointerDownHandler
     public void NextVid()
     {
         VideosCounter++;
-        if (VideosCounter < 0)
+        if (VideosCounter > cardVideos.Count - 1)
         {
-            VideosCounter = cardVideos.Count -1;
+
+            VideosCounter = cardVideos.Count - 1;
+            VideoTex.GetComponent<VideoPlayer>().Pause();
+            FinishedPanel.SetActive(true);
         }
-        else if (VideosCounter > cardVideos.Count -1 )
-        {
-            VideosCounter = 0;
-        }
-        
+
         PlayVideo();
     }
 
     public void PrevVid()
     {
         VideosCounter--;
-        if (VideosCounter < 0)
-        {
-            VideosCounter = cardVideos.Count - 1;
-        }
-        else if (VideosCounter > cardVideos.Count - 1)
+        if(VideosCounter <= 0)
         {
             VideosCounter = 0;
         }
