@@ -810,7 +810,7 @@ PrefabInstance:
       objectReference: {fileID: 1904864637}
     - target: {fileID: 1309733108214304597, guid: 65808d3196329ac4e94eb3bf6d3203cc, type: 3}
       propertyPath: cardQuestionsTotal
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1309733108581228558, guid: 65808d3196329ac4e94eb3bf6d3203cc, type: 3}
       propertyPath: m_Sprite

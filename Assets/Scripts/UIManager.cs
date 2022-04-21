@@ -86,11 +86,12 @@ public class UIManager : MonoBehaviour
     public void StartTestPrac()
     {
         SceneManager.LoadScene("CardTest");
-        Debug.Log("Lee");
         SceneManager.LoadScene("SampleScene");
 
         StartCoroutine(DelayTestPanel());
     }
+
+    
 
     public IEnumerator DelayTestPanel()
     {
@@ -172,6 +173,7 @@ public class UIManager : MonoBehaviour
         Chips.SetActive(false);
         OverAll.SetActive(false);
         MenuCategories.SetActive(false);
+        Debug.Log("CLick BTNS");
     }
 
     public void ClickBtnChips()
@@ -180,6 +182,7 @@ public class UIManager : MonoBehaviour
         Cards.SetActive(false);
         OverAll.SetActive(false);
         MenuCategories.SetActive(false);
+        Debug.Log("CLick BTNS");
     }
 
     public void ClickBtnOverAll()
@@ -188,6 +191,7 @@ public class UIManager : MonoBehaviour
         Cards.SetActive(false);
         Chips.SetActive(false);
         MenuCategories.SetActive(false);
+        Debug.Log("CLick BTNS");
     }
 
     //public void CloseBankerThirdButton()

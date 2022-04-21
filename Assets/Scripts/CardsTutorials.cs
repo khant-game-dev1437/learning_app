@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Video;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class CardsTutorials : MonoBehaviour, IDragHandler, IPointerDownHandler
 {
@@ -18,6 +19,9 @@ public class CardsTutorials : MonoBehaviour, IDragHandler, IPointerDownHandler
     private List<string> cardVideos = new List<string>();
 
     private int VideosCounter = 0;
+
+    [SerializeField]
+    private GameObject MenuCategories;
 
     private void Awake()
     {
@@ -59,7 +63,7 @@ public class CardsTutorials : MonoBehaviour, IDragHandler, IPointerDownHandler
         }
     }
 
-    private void SkipToPercent(float pct)
+    public void SkipToPercent(float pct)
     {
         var frame = VideoTex.frameCount * pct;
         VideoTex.frame = (long)frame;
@@ -108,5 +112,29 @@ public class CardsTutorials : MonoBehaviour, IDragHandler, IPointerDownHandler
         }
 
         PlayVideo();
+    }
+
+    public void StartPrac()
+    {
+        SceneManager.LoadScene("CardPrac");
+        FinishedPanel.SetActive(false);
+        gameObject.SetActive(false);
+    }
+
+    public void ShowMainMenu()
+    {
+        FinishedPanel.SetActive(false);
+        UIManager.Instance.MainMenu.SetActive(true);
+        MenuCategories.SetActive(true);
+        Debug.Log(";lakjsd;lfja  " + MenuCategories.activeInHierarchy);
+        gameObject.SetActive(false);
+    }
+
+    public void TutoAgain()
+    {
+        UIManager.Instance.MainMenu.SetActive(false);
+        FinishedPanel.SetActive(false);
+        SkipToPercent(0f);
+        VideoTex.Play();
     }
 }

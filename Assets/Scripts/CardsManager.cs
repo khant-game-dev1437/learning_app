@@ -81,7 +81,7 @@ public class CardsManager : MonoBehaviour
     private bool isBankerDrawed = true;
     private bool isPlayerDrawed = true;
 
-    
+
     [HideInInspector]
     public int practice = 0;
 
@@ -130,7 +130,7 @@ public class CardsManager : MonoBehaviour
 
     void Start()
     {
-        
+
         btnQuit.onClick.AddListener(QuitGame);
         cardTimer_Txt.gameObject.SetActive(false);
         imgCross.SetActive(false);
@@ -409,8 +409,6 @@ public class CardsManager : MonoBehaviour
         {
             playerTotal = getPlayerData();
             bankerTotal = getBankerData();
-
-            Debug.Log("CounterValue " + counter);
             CaculatePlayerData();
             counter = 0;
             CancelInvoke("CreateCards");
@@ -458,12 +456,11 @@ public class CardsManager : MonoBehaviour
     {
         int cardNo = DrawACard();
         beforePlayerTotal = playerTotal;
-        Debug.Log("BeforePlayerTotal" + playerTotal);
-        Debug.Log("CardNo" + cardNo);
+        
         playerTotal += cardNo;
-        Debug.Log("AfterPlayerTotal" + playerTotal);
+        
         playerThirdCard = cardNo;
-        Debug.Log("PLayerThirdCard" + playerThirdCard);
+        
         isPlayerDraw = true;
     }
 
@@ -471,32 +468,31 @@ public class CardsManager : MonoBehaviour
     {
         int cardNo = DrawACard();
         beforeBankerTotal = bankerTotal;
-        Debug.Log("BeforeBankerTotal" + bankerTotal);
-        Debug.Log("CardNo" + cardNo);
+
         bankerTotal += cardNo;
-        Debug.Log("AfterBankerTotal" + bankerTotal);
+
         bankerThirdCard = cardNo;
-        Debug.Log("BankerThirdCard" + bankerThirdCard);
+
         isBankerDraw = true;
     }
 
     public void CaculatePlayerData()
     {
-        Debug.Log("PlayerTotal " + playerTotal);
-        Debug.Log("BankerTotal " + bankerTotal);
+        //Debug.Log("PlayerTotal " + playerTotal);
+        //Debug.Log("BankerTotal " + bankerTotal);
         checkOver10();
         if (playerTotal == 8 || playerTotal == 9 || bankerTotal == 8 || bankerTotal == 9)
         {
             checkOver10();
-            Debug.Log("Natural");
+            // Debug.Log("Natural");
             isBankerDraw = false;
             isPlayerDraw = false;
-            Debug.Log("player Banker Nautral" + playerTotal + " : " + bankerTotal);
+            //Debug.Log("player Banker Nautral" + playerTotal + " : " + bankerTotal);
             if (playerTotal > bankerTotal)
             {
                 WinnerName("Player Wins");
                 //UIManager.Instance.WinOrLose_Txt.text = "Player Wins";
-               // UIManager.Instance.WinOrLose_Txt.text = winnerName;
+                // UIManager.Instance.WinOrLose_Txt.text = winnerName;
                 return;
             }
             else if (playerTotal < bankerTotal)
@@ -520,12 +516,11 @@ public class CardsManager : MonoBehaviour
             //For Player Stands and Banker < 6
             if (playerTotal >= 6 && playerTotal <= 7)
             {
-                Debug.Log("PlayerTotal playerTotal >= 6 && playerTotal <= 7");
                 if (bankerTotal < 6)
                 {
                     DrawBankerThirdCard();
                     //createBankerThirdCard();
-                    Debug.Log("Banker Draw a card " + bankerThirdCard + "  Banker Total:  " + bankerTotal);
+                    //Debug.Log("Banker Draw a card " + bankerThirdCard + "  Banker Total:  " + bankerTotal);
 
                     checkOver10();
                     if (bankerTotal > playerTotal)
@@ -540,15 +535,18 @@ public class CardsManager : MonoBehaviour
                     {
                         WinnerName("Tie");
                     }
-                } else if(bankerTotal >=6 || bankerTotal <= 7)
+                }
+                else if (bankerTotal >= 6 || bankerTotal <= 7)
                 {
-                    if(playerTotal > bankerTotal)
+                    if (playerTotal > bankerTotal)
                     {
                         WinnerName("Player Wins");
-                    } else if (playerTotal < bankerTotal)
+                    }
+                    else if (playerTotal < bankerTotal)
                     {
                         WinnerName("Banker Wins");
-                    } else
+                    }
+                    else
                     {
                         WinnerName("Tie");
                     }
@@ -575,13 +573,13 @@ public class CardsManager : MonoBehaviour
                 DrawPlayerThirdCard();
                 //createPlayerThirdCard();
                 checkOver10();
-                Debug.Log("Player Draw a card " + playerThirdCard + "  Player Total:  " + playerTotal);
+                //Debug.Log("Player Draw a card " + playerThirdCard + "  Player Total:  " + playerTotal);
 
                 isBankerDraw = checkBankerDraw(bankerTotal, playerThirdCard);
                 if (isBankerDraw)
                 {
                     DrawBankerThirdCard();
-                    Debug.Log("IS BANKER DRAW " + isBankerDraw + "   BankerThirdCard :: " + bankerThirdCard);
+                   // Debug.Log("IS BANKER DRAW " + isBankerDraw + "   BankerThirdCard :: " + bankerThirdCard);
 
                     checkOver10();
                     if (bankerTotal > playerTotal)
@@ -710,14 +708,15 @@ public class CardsManager : MonoBehaviour
         //UIManager.Instance.DisableCardBtns();
         Debug.Log("BeforeBankerTotal = " + beforeBankerTotal + " BeforePlayerTotal = " + beforePlayerTotal);
         Wrong_Txt.text = string.Empty;
-        if(isPlayerDraw != true)
+        if (isPlayerDraw != true)
         {
             DisableCardBtns();
             Wrong_Txt.text = "Player cannot Draw";
             imgCross.SetActive(true);
             WrongAndStopTimer();
+            Debug.Log("May Loe 1");
         }
-        if(beforePlayerTotal == 8 || beforePlayerTotal == 9)
+        if (beforePlayerTotal == 8 || beforePlayerTotal == 9)
         {
             DisableCardBtns();
             Wrong_Txt.text = "Player cannot draw in Nautral";
@@ -731,10 +730,11 @@ public class CardsManager : MonoBehaviour
             WinOrLose_Txt.text = winnerName;
             imgCross.SetActive(true);
             WrongAndStopTimer();
+            Debug.Log("May Loe 2");
             if (beforePlayerTotal < beforeBankerTotal)
             {
                 WinnerName("Banker Wins");
-                 WinOrLose_Txt.text = winnerName;
+                WinOrLose_Txt.text = winnerName;
             }
         }
         if (isBankerDraw != true && isPlayerDraw != true)
@@ -747,7 +747,8 @@ public class CardsManager : MonoBehaviour
             Debug.Log("isPlayerDraw && isPlayerDrawed == true" + " " + isPlayerDraw + "" + isPlayerDrawed);
             InstantiatePlayerThirdCard();
             //UIManager.Instance.WinOrLose_Txt.text = winnerName;
-        } else if(isPlayerDraw != true && isBankerDraw == true && isBankerDrawed != false)
+        }
+        else if (isPlayerDraw != true && isBankerDraw == true && isBankerDrawed != false)
         {
             DisableCardBtns();
             InstantiateBankerThirdCard();
@@ -755,14 +756,18 @@ public class CardsManager : MonoBehaviour
             Wrong_Txt.text = "Player cannot draw, it stands";
             imgCross.SetActive(true);
             WrongAndStopTimer();
-        } else if(isPlayerDraw != true && isBankerDraw == true && isBankerDrawed != true)
+            Debug.Log("May Loe 3");
+        }
+        else if (isPlayerDraw != true && isBankerDraw == true && isBankerDrawed != true)
         {
             DisableCardBtns();
             WinOrLose_Txt.text = winnerName;
             Wrong_Txt.text = "Player cannot draw, it stands";
             imgCross.SetActive(true);
             WrongAndStopTimer();
-        } else if(isPlayerDraw == true && isBankerDraw == true && isPlayerDrawed == false && isBankerDrawed == true)
+            Debug.Log("May Loe 4");
+        }
+        else if (isPlayerDraw == true && isBankerDraw == true && isPlayerDrawed == false && isBankerDrawed == true)
         {
             InstantiateBankerThirdCard();
             DisableCardBtns();
@@ -770,6 +775,7 @@ public class CardsManager : MonoBehaviour
             WinOrLose_Txt.text = winnerName;
             imgCross.SetActive(true);
             WrongAndStopTimer();
+            Debug.Log("May Loe 5");
         }
         else
         {
@@ -780,6 +786,7 @@ public class CardsManager : MonoBehaviour
             imgCross.SetActive(true);
             //Debug.Log("WRONG PLAYER DRAW");
             WrongAndStopTimer();
+            Debug.Log("May Loe 6");
         }
     }
 
@@ -799,17 +806,19 @@ public class CardsManager : MonoBehaviour
             WinOrLose_Txt.text = winnerName;
             imgCross.SetActive(true);
             WrongAndStopTimer();
+            Debug.Log("May Loe 7");
         }
         if (beforePlayerTotal == 8 || beforePlayerTotal == 9)
         {
             DisableCardBtns();
-           imgCross.SetActive(true);
+            imgCross.SetActive(true);
             Wrong_Txt.text = "Banker cannot draw";
             WrongAndStopTimer();
+            Debug.Log("May Loe 8");
             if (beforePlayerTotal > beforeBankerTotal)
             {
                 WinnerName("Player Wins");
-                 WinOrLose_Txt.text = winnerName;
+                WinOrLose_Txt.text = winnerName;
             }
         }
         if (isBankerDraw != true && isPlayerDraw != true)
@@ -819,6 +828,7 @@ public class CardsManager : MonoBehaviour
             WinOrLose_Txt.text = winnerName;
             imgCross.SetActive(true);
             WrongAndStopTimer();
+            Debug.Log("May Loe 9");
         }
         if (isBankerDraw == true && isBankerDrawed == true && isPlayerDrawed == false && isPlayerDraw == true)
         {
@@ -832,17 +842,19 @@ public class CardsManager : MonoBehaviour
             //UIManager.Instance.WinOrLose_Txt.text = winnerName;
             Debug.Log("isBankerDraw && isBankerDrawed == true && isPlayerDraw == false");
         }
-        else if(isBankerDraw != true && isPlayerDraw == true && isPlayerDrawed == true)
+        else if (isBankerDraw != true && isPlayerDraw == true && isPlayerDrawed == true)
         {
             DisableCardBtns();
             InstantiatePlayerThirdCard();
             Debug.Log("isBankerDraw : " + isBankerDraw + " isBankerDrawed " + isBankerDrawed + " isPlayerDraw " + isPlayerDraw);
-           Wrong_Txt.text = "Banker cannot draw";
+            Wrong_Txt.text = "Banker cannot draw";
             WinOrLose_Txt.text = winnerName;
             Debug.Log("WRONG Banker DRAW");
             imgCross.SetActive(true);
             WrongAndStopTimer();
-        } else if(isBankerDraw == true && isBankerDrawed == true && isPlayerDraw == true && isPlayerDrawed == true)
+            Debug.Log("May Loe 10");
+        }
+        else if (isBankerDraw == true && isBankerDrawed == true && isPlayerDraw == true && isPlayerDrawed == true)
         {
             DisableCardBtns();
             InstantiatePlayerThirdCard();
@@ -851,13 +863,16 @@ public class CardsManager : MonoBehaviour
             Wrong_Txt.text = "Banker cannot draw, Player needs to draw first";
             imgCross.SetActive(true);
             WrongAndStopTimer();
-        } else if(isBankerDraw == false && isPlayerDraw == true && isPlayerDrawed == false)
+            Debug.Log("May Loe 11");
+        }
+        else if (isBankerDraw == false && isPlayerDraw == true && isPlayerDrawed == false)
         {
             DisableCardBtns();
             WinOrLose_Txt.text = winnerName;
             Wrong_Txt.text = "Banker cannot draw...";
             imgCross.SetActive(true);
             WrongAndStopTimer();
+            Debug.Log("May Loe 12");
         }
         else if (isPlayerDraw == true && isBankerDraw == true && isPlayerDrawed == false && isBankerDrawed == false)
         {
@@ -866,6 +881,7 @@ public class CardsManager : MonoBehaviour
             WinOrLose_Txt.text = winnerName;
             imgCross.SetActive(true);
             WrongAndStopTimer();
+            Debug.Log("May Loe 13");
         }
     }
 
@@ -901,8 +917,10 @@ public class CardsManager : MonoBehaviour
                     Wrong_Txt.text = "CardEach only works in BankerPoints 0 to 2 and PlayerPoints 0 to 5. Incorrect xD";
                     isBankerDrawed = false;
                     WrongAndStopTimer();
+                    Debug.Log("May Loe 14");
                 }
-            } else
+            }
+            else
             {
                 InstantiatePlayerThirdCard();
                 InstantiateBankerThirdCard();
@@ -911,19 +929,22 @@ public class CardsManager : MonoBehaviour
                 Wrong_Txt.text = "CardEach only works in BankerPoints 0 to 2 and PlayerPoints 0 to 5. Incorrect xD";
                 WinOrLose_Txt.text = winnerName;
                 WrongAndStopTimer();
+                Debug.Log("May Loe 15");
                 return;
             }
-            
-        } 
-        
-        if(isPlayerDraw != true && isBankerDraw != true)
+
+        }
+
+        if (isPlayerDraw != true && isBankerDraw != true)
         {
             imgCross.SetActive(true);
             DisableCardBtns();
             Wrong_Txt.text = "CardEach only works in BankerPoints 0 to 2 and PlayerPoints 0 to 5. Incorrect";
             WinOrLose_Txt.text = winnerName;
             WrongAndStopTimer();
-        } else if(isBankerDraw == true && isPlayerDraw == false)
+            Debug.Log("May Loe 16");
+        }
+        else if (isBankerDraw == true && isPlayerDraw == false)
         {
             InstantiateBankerThirdCard();
             imgCross.SetActive(true);
@@ -932,7 +953,9 @@ public class CardsManager : MonoBehaviour
             WinOrLose_Txt.text = winnerName;
             isPlayerDrawed = false;
             WrongAndStopTimer();
-        } else if(isPlayerDraw == true && isBankerDraw == false)
+            Debug.Log("May Loe 17");
+        }
+        else if (isPlayerDraw == true && isBankerDraw == false)
         {
             InstantiatePlayerThirdCard();
             imgCross.SetActive(true);
@@ -940,14 +963,18 @@ public class CardsManager : MonoBehaviour
             Wrong_Txt.text = "CardEach only works in BankerPoints 0 to 2 and PlayerPoints 0 to 5. Incorrect";
             WinOrLose_Txt.text = winnerName;
             WrongAndStopTimer();
-        } else if(isPlayerDraw == true && isBankerDraw == true && isPlayerDrawed == false && isBankerDrawed == false)
+            Debug.Log("May Loe 18");
+        }
+        else if (isPlayerDraw == true && isBankerDraw == true && isPlayerDrawed == false && isBankerDrawed == false)
         {
             imgCross.SetActive(true);
             DisableCardBtns();
             Wrong_Txt.text = "You have already drawed CardEach. Incorrect.";
             WinOrLose_Txt.text = winnerName;
             WrongAndStopTimer();
-        } else if (isPlayerDraw == true && isBankerDraw == true && isPlayerDrawed == false && isBankerDrawed == true)
+            Debug.Log("May Loe 19");
+        }
+        else if (isPlayerDraw == true && isBankerDraw == true && isPlayerDrawed == false && isBankerDrawed == true)
         {
             InstantiateBankerThirdCard();
             imgCross.SetActive(true);
@@ -955,10 +982,11 @@ public class CardsManager : MonoBehaviour
             Wrong_Txt.text = "You clicked Draw Player. Cannot click CardEach";
             WinOrLose_Txt.text = winnerName;
             WrongAndStopTimer();
+            Debug.Log("May Loe 20");
         }
 
         //Test
-        
+
     }
 
     public void InstantiateBankerThirdCard()
@@ -1115,7 +1143,7 @@ public class CardsManager : MonoBehaviour
             {
                 if (gameObjectsCounter == 4)
                 {
-                    Debug.Log("gameObjectsCounter " + gameObjectsCounter);
+                    //Debug.Log("gameObjectsCounter " + gameObjectsCounter);
                     StartCoroutine(ActiveCardButtons());
                     gameObjectsCounter = 0;
                 }
@@ -1126,16 +1154,93 @@ public class CardsManager : MonoBehaviour
 
     public void CheckTrueOrFalseWinner(string name)
     {
-        
-        Debug.Log("CHECK TRUE OR FALSE" + winnerName);
+
+        // Debug.Log("CHECK TRUE OR FALSE" + winnerName);
         if (name != winnerName)
         {
-           DisableCardBtns();
+            DisableCardBtns();
             Wrong_Txt.text = "Wrong";
 
             if (isPlayerDraw && isPlayerDrawed)
             {
                 WinOrLose_Txt.text = winnerName;
+                InstantiatePlayerThirdCard();
+                Wrong_Txt.text = "You are wrong, Player needs to draw 3rd card";
+                imgCross.SetActive(true);
+                //Debug.Log("FUCK1");
+                if (isBankerDraw && isBankerDrawed)
+                {
+                    InstantiateBankerThirdCard();
+                }
+                isPlayerDrawed = false;
+                WrongAndStopTimer();
+                Debug.Log("May Loe 21");
+                return;
+            }
+            if (isBankerDraw && isBankerDrawed)
+            {
+                WinOrLose_Txt.text = winnerName;
+
+                InstantiateBankerThirdCard();
+                Wrong_Txt.text = "You are wrong, Banker needs to draw 3rd card";
+                imgCross.SetActive(true);
+                Debug.Log("FUCK2");
+                isBankerDrawed = false;
+                WrongAndStopTimer();
+                Debug.Log("May Loe 22");
+            }
+            if (isPlayerDraw && isPlayerDrawed == false && isBankerDraw && isBankerDrawed == false)
+            {
+                WinOrLose_Txt.text = winnerName;
+                Wrong_Txt.text = "Incorrect";
+                imgCross.SetActive(true);
+                WrongAndStopTimer();
+                Debug.Log("May Loe 23");
+            }
+            else if (isBankerDraw != true && isPlayerDraw != true)
+            {
+                Debug.Log("WTF DOG");
+                WinOrLose_Txt.text = winnerName;
+                Wrong_Txt.text = "Incorrect";
+                imgCross.SetActive(true);
+                WrongAndStopTimer();
+                Debug.Log("May Loe 24");
+            }
+            if (isPlayerDraw == false && isBankerDraw == true && isBankerDrawed == true)
+            {
+                InstantiateBankerThirdCard();
+                WinOrLose_Txt.text = winnerName;
+                Wrong_Txt.text = "Incorrect";
+                imgCross.SetActive(true);
+                WrongAndStopTimer();
+                Debug.Log("May Loe 25");
+            }
+            if (isPlayerDraw == false && isBankerDraw == true && isBankerDrawed == false)
+            {
+                WinOrLose_Txt.text = winnerName;
+                Wrong_Txt.text = "Incorrect";
+                imgCross.SetActive(true);
+                WrongAndStopTimer();
+                Debug.Log("May Loe 26");
+            }
+            if (isPlayerDraw == true && isBankerDraw == false && isPlayerDrawed == false)
+            {
+                WinOrLose_Txt.text = winnerName;
+                Wrong_Txt.text = "Incorrect";
+                imgCross.SetActive(true);
+                WrongAndStopTimer();
+                Debug.Log("May Loe 27");
+            }
+            return;
+        }
+        else if (name == winnerName)
+        {
+            Debug.Log("Tuu twr p" + winnerName);
+            if (isPlayerDraw && isPlayerDrawed)
+            {
+                DisableCardBtns();
+                WinOrLose_Txt.text = winnerName;
+
                 InstantiatePlayerThirdCard();
                 Wrong_Txt.text = "You are wrong, Player needs to draw 3rd card";
                 imgCross.SetActive(true);
@@ -1146,112 +1251,48 @@ public class CardsManager : MonoBehaviour
                 }
                 isPlayerDrawed = false;
                 WrongAndStopTimer();
+                Debug.Log("May Loe 28");
+                return;
             }
             if (isBankerDraw && isBankerDrawed)
             {
+                DisableCardBtns();
                 WinOrLose_Txt.text = winnerName;
 
                 InstantiateBankerThirdCard();
                 Wrong_Txt.text = "You are wrong, Banker needs to draw 3rd card";
-                imgCross.SetActive(true);
+                imgCross.SetActive(false);
                 Debug.Log("FUCK2");
                 isBankerDrawed = false;
                 WrongAndStopTimer();
+                Debug.Log("May Loe 29");
+                return;
+            }
+            if (isPlayerDraw == true && isPlayerDrawed == false && isBankerDraw == true && isBankerDrawed == true)
+            {
+                InstantiateBankerThirdCard();
+                WinOrLose_Txt.text = winnerName;
+                Wrong_Txt.text = "You are wrong, Banker needs to draw 3rd card";
+                imgCross.SetActive(false);
+                WrongAndStopTimer();
+                Debug.Log("May Loe 30");
             }
             if (isPlayerDraw && isPlayerDrawed == false && isBankerDraw && isBankerDrawed == false)
             {
+                DisableCardBtns();
                 WinOrLose_Txt.text = winnerName;
-                Wrong_Txt.text = "Incorrect";
-                imgCross.SetActive(true);
-                WrongAndStopTimer();
+                Wrong_Txt.text = "Correct";
+
+                CancelInvoke("Timer");
+                StartCoroutine("NextGameAfterTimer");
             }
             else if (isBankerDraw != true && isPlayerDraw != true)
             {
-                Debug.Log("WTF DOG");
-                WinOrLose_Txt.text = winnerName;
-                Wrong_Txt.text = "Incorrect";
-                imgCross.SetActive(true);
-                WrongAndStopTimer();
-            }
-            if (isPlayerDraw == false && isBankerDraw == true && isBankerDrawed == true)
-            {
-                InstantiateBankerThirdCard();
-                WinOrLose_Txt.text = winnerName;
-                Wrong_Txt.text = "Incorrect";
-                imgCross.SetActive(true);
-                WrongAndStopTimer();
-            }
-            if (isPlayerDraw == false && isBankerDraw == true && isBankerDrawed == false)
-            {
-                WinOrLose_Txt.text = winnerName;
-                Wrong_Txt.text = "Incorrect";
-                imgCross.SetActive(true);
-                WrongAndStopTimer();
-            }
-            if (isPlayerDraw == true && isBankerDraw == false && isPlayerDrawed == false)
-            {
-                WinOrLose_Txt.text = winnerName;
-                Wrong_Txt.text = "Incorrect";
-                imgCross.SetActive(true);
-                WrongAndStopTimer();
-            }
-            return;
-        } else if(name == winnerName) 
-        {
-            Debug.Log("Tuu twr p" + winnerName);    
-            if (isPlayerDraw && isPlayerDrawed )
-            {
-                DisableCardBtns();
-                WinOrLose_Txt.text = winnerName;
-                
-                InstantiatePlayerThirdCard();
-                Wrong_Txt.text = "You are wrong, Player needs to draw 3rd card";
-                imgCross.SetActive(true);
-                Debug.Log("FUCK1");
-                if(isBankerDraw && isBankerDrawed )
-                {
-                    InstantiateBankerThirdCard();
-                }
-                isPlayerDrawed = false;
-                WrongAndStopTimer();
-                return;
-            }
-            if (isBankerDraw && isBankerDrawed)
-            {
-                DisableCardBtns();
-                WinOrLose_Txt.text = winnerName;
-                
-                InstantiateBankerThirdCard();
-                Wrong_Txt.text = "You are wrong, Banker needs to draw 3rd card";
-                imgCross.SetActive(false);
-                Debug.Log("FUCK2");
-                isBankerDrawed = false;
-                WrongAndStopTimer();
-                return;
-            }
-            if (isPlayerDraw == true && isPlayerDrawed == false && isBankerDraw== true && isBankerDrawed == true)
-            {
-                InstantiateBankerThirdCard();
-                WinOrLose_Txt.text = winnerName;
-                Wrong_Txt.text = "You are wrong, Banker needs to draw 3rd card";
-                imgCross.SetActive(false);
-                WrongAndStopTimer();
-            }
-            if(isPlayerDraw && isPlayerDrawed == false && isBankerDraw && isBankerDrawed == false)
-            {
-                DisableCardBtns();
-                WinOrLose_Txt.text = winnerName;
-                Wrong_Txt.text = "Correct";
-               
-                CancelInvoke("Timer");
-                StartCoroutine("NextGameAfterTimer");
-            } else if(isBankerDraw != true && isPlayerDraw != true)
-            {
                 DisableCardBtns();
                 Debug.Log("WTF DOG");
                 WinOrLose_Txt.text = winnerName;
                 Wrong_Txt.text = "Correct";
-                
+
                 CancelInvoke("Timer");
                 StartCoroutine("NextGameAfterTimer");
             }
@@ -1263,6 +1304,7 @@ public class CardsManager : MonoBehaviour
                 Wrong_Txt.text = "Incorrect";
                 imgCross.SetActive(true);
                 WrongAndStopTimer();
+                Debug.Log("May Loe 31");
             }
             if (isPlayerDraw == false && isBankerDraw == true && isBankerDrawed == false)
             {
@@ -1270,16 +1312,16 @@ public class CardsManager : MonoBehaviour
                 WinOrLose_Txt.text = winnerName;
                 Wrong_Txt.text = "Correct";
                 //UIManager.Instance.imgCross.SetActive(true);
-                
+
                 CancelInvoke("Timer");
                 StartCoroutine("NextGameAfterTimer");
             }
-            if(isPlayerDraw == true && isBankerDraw == false && isPlayerDrawed == false)
+            if (isPlayerDraw == true && isBankerDraw == false && isPlayerDrawed == false)
             {
                 DisableCardBtns();
                 WinOrLose_Txt.text = winnerName;
                 Wrong_Txt.text = "Correct";
-                
+
                 CancelInvoke("Timer");
                 StartCoroutine("NextGameAfterTimer");
                 //UIManager.Instance.imgCross.SetActive(true);
@@ -1297,6 +1339,7 @@ public class CardsManager : MonoBehaviour
             Wrong_Txt.text = "Time is Up!!!! ";
             forCardTest();
             WrongAndStopTimer();
+            Debug.Log("May Loe 32");
             return;
         }
         //Debug.Log("TIMER " + timer);
@@ -1306,24 +1349,25 @@ public class CardsManager : MonoBehaviour
 
     public void checkCardsPracOrTest(string checkCardExam)
     {
-        Debug.Log("CardNo Ha : " + cardQuestionsTotal);
+        Debug.Log("CardQues Total : " + cardQuestionsCounter);
         cardStates = checkCardExam;
-       
+
         if (cardStates == "isCardTest")
-        {   
+        {
             if (cardQuestionsCounter == cardQuestionsTotal)
             {
-                Debug.Log("Pyae Twr p ha, checkCardsPracOrTest () : "+ cardQuestionsTotal);
-               float a = (float)cardQuestionCorrect / cardQuestionsTotal;
+                Debug.Log("Pyae Twr p ha, checkCardsPracOrTest () : " + cardQuestionsTotal);
+                float a = (float)cardQuestionCorrect / cardQuestionsTotal;
                 float percent = a * 100;
-                
-                if(percent < 90)
+
+                if (percent < 90)
                 {
                     FailTest.SetActive(true);
                     FailTest.transform.GetChild(2).GetChild(0).GetChild(0).GetComponent<Image>().fillAmount = a;
                     FailTest.transform.GetChild(2).GetChild(1).GetComponent<TextMeshProUGUI>().text = percent.ToString() + "%";
                     ResultPanel.SetActive(false);
-                } else
+                }
+                else
                 {
                     ResultPanel.SetActive(true);
                     ResultPanelProgressBar.transform.GetChild(0).GetComponent<RectTransform>().localScale = new Vector3(a, 1, 1);
@@ -1337,7 +1381,7 @@ public class CardsManager : MonoBehaviour
             }
             cardQuestionsCounter++;
             InvokeRepeating("Timer", 1f, 1f);
-        } 
+        }
         //if(cardStates == "isPractice")
         //{
         //    checkPrac();
@@ -1346,7 +1390,7 @@ public class CardsManager : MonoBehaviour
 
     public void checkPrac()
     {
-        if(cardStates == "isPractice")
+        if (cardStates == "isPractice")
         {
             UnlockCardGameCounter++;
             ProgressBar.transform.GetChild(0).GetComponent<RectTransform>().localScale = new Vector3((float)UnlockCardGameCounter / (float)UnlockCardGame, 1, 1);
@@ -1363,10 +1407,11 @@ public class CardsManager : MonoBehaviour
     }
     public IEnumerator NextGameAfterTimer()
     {
-        if(cardStates == "isPractice")
+        if (cardStates == "isPractice")
         {
             checkPrac();
-        } else if (cardStates == "isCardTest")
+        }
+        else if (cardStates == "isCardTest")
         {
             cardQuestionCorrect++;
             float a = (float)cardQuestionsCounter / cardQuestionsTotal;
@@ -1409,7 +1454,7 @@ public class CardsManager : MonoBehaviour
                     isBankerDrawed = false;
                 }
             }
-            else 
+            else
             {
                 Debug.Log("xD");
                 InstantiatePlayerThirdCard();
@@ -1467,7 +1512,7 @@ public class CardsManager : MonoBehaviour
 
     public void WrongAndStopTimer()
     {
-       if(cardStates == "isCardTest")
+        if (cardStates == "isCardTest")
         {
             Debug.Log("Lee tway phyit p");
             float a = (float)cardQuestionsCounter / cardQuestionsTotal;
