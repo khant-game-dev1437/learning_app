@@ -42,6 +42,12 @@ public class UIManager : MonoBehaviour
     public Text NumberOfQues;
     public Text Timer;
 
+    public Text ChipNumberOfQues;
+    public Text ChipTimer;
+    //Chips
+    public GameObject ChipsPracWelcome;
+    public GameObject ChipsTestWelcome;
+    public GameObject ChipPracComplete;
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -105,6 +111,11 @@ public class UIManager : MonoBehaviour
     {
         SceneManager.LoadScene("CardTest");
         CardTestPanel.SetActive(false);
+    }
+    public void StartChipTestWelcome()
+    {
+        SceneManager.LoadScene("ChipTest");
+        ChipsTestWelcome.SetActive(false);
     }
     public void QuitGame()
     {
@@ -182,7 +193,6 @@ public class UIManager : MonoBehaviour
         Cards.SetActive(false);
         OverAll.SetActive(false);
         MenuCategories.SetActive(false);
-        Debug.Log("CLick BTNS");
     }
 
     public void ClickBtnOverAll()
@@ -191,70 +201,48 @@ public class UIManager : MonoBehaviour
         Cards.SetActive(false);
         Chips.SetActive(false);
         MenuCategories.SetActive(false);
-        Debug.Log("CLick BTNS");
     }
 
-    //public void CloseBankerThirdButton()
-    //{
-    //    btnBankerThird.interactable = false;
-    //}
+    public void ClickBtnChipPrac()
+    {
+        StartCoroutine(ShowChipPracWelcome());
+        
+        OverAll.SetActive(false);
+        Cards.SetActive(false);
+        Chips.SetActive(false);
+        MenuCategories.SetActive(false);
+    }
 
-    //public void ClosePlayerThirdButton()
-    //{
-    //    btnPlayerThird.interactable = false;
-    //}
+    public void ClickBtnChipTest()
+    {
+        SceneManager.LoadScene("ChipTest");
+        OverAll.SetActive(false);
+        Cards.SetActive(false);
+        Chips.SetActive(false);
+        MenuCategories.SetActive(false);
+    }
 
-    //public void CloseBtnsInNextGame()
-    //{
-    //    btnBankerThird.gameObject.SetActive(false);
-    //    btnPlayerThird.gameObject.SetActive(false);
-    //    btnNextGame.gameObject.SetActive(false);
-    //    WinOrLose_Txt.gameObject.SetActive(false);
-    //    btnCardEach.gameObject.SetActive(false);
-    //    btnBankerWins.gameObject.SetActive(false);
-    //    btnPlayerWins.gameObject.SetActive(false);
-    //    btnTie.gameObject.SetActive(false);
-    //    imgCross.SetActive(false);
-    //}
-    //public IEnumerator ActiveCardButtons()
-    //{
-    //    yield return new WaitForSeconds(1.5f);
-    //    btnBankerThird.gameObject.SetActive(true);
-    //    btnPlayerThird.gameObject.SetActive(true);
-    //    btnNextGame.gameObject.SetActive(true);
-    //    WinOrLose_Txt.gameObject.SetActive(true);
-    //    btnCardEach.gameObject.SetActive(true);
-    //    btnBankerWins.gameObject.SetActive(true);
-    //    btnPlayerWins.gameObject.SetActive(true);
-    //    btnTie.gameObject.SetActive(true);
-    //    if (CardsManager.Instance.isStates == "isCardTest")
-    //    {
-    //        btnNextGame.gameObject.SetActive(false);
-    //    } else
-    //    {
-    //        btnNextGame.gameObject.SetActive(true);
-    //    }
+    public IEnumerator ShowChipPracWelcome()
+    {  
+        ChipsPracWelcome.SetActive(true);
+        yield return new WaitForSeconds(3f);
+        SceneManager.LoadScene("ChipPrac");
+        ChipsPracWelcome.SetActive(false);
+    }
+    //Chips
+    public void StartChipTest()
+    {
+        SceneManager.LoadScene("ChipTest");
+        SceneManager.LoadScene("SampleScene");
 
-    //    //ActiveCardBtns();
-    //}
+        StartCoroutine(DelayChipTestPanel());
+    }
 
-    //public void DisableCardBtns()
-    //{
-    //    btnBankerThird.interactable = false;
-    //    btnPlayerThird.interactable = false;
-    //    btnCardEach.interactable = false;
-    //    btnBankerWins.interactable = false;
-    //    btnPlayerWins.interactable = false;
-    //    btnTie.interactable = false;
-    //}
-
-    //public void ActiveCardBtns()
-    //{
-    //    btnBankerThird.interactable = true;
-    //    btnPlayerThird.interactable = true;
-    //    btnCardEach.interactable = true;
-    //    btnBankerWins.interactable = true;
-    //    btnPlayerWins.interactable = true;
-    //    btnTie.interactable = true;
-    //}
+    public IEnumerator DelayChipTestPanel()
+    {
+        yield return new WaitForSeconds(0.5f);
+        ChipsTestWelcome.SetActive(true);
+        ChipNumberOfQues.text = ChipsManager.chipQuesTotal.ToString();
+        ChipTimer.text = ChipsManager.saveChipTimer.ToString();
+    }
 }

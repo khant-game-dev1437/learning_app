@@ -14,4 +14,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CardTest.unity
     guid: 2c3b9567624c84d4eb103d4709056ba6
+  - enabled: 1
+    path: Assets/Scenes/ChipTest.unity
+    guid: 71957f490023daf4ea66c2ba1890d40f
+  - enabled: 1
+    path: Assets/Scenes/ChipPrac.unity
+    guid: e5fd23e982b063d479596d4fc7abaaac
   m_configObjects: {}
