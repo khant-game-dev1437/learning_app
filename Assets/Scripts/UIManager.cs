@@ -154,6 +154,12 @@ public class UIManager : MonoBehaviour
         MainMenu.SetActive(true);
     }
 
+    public void ShowMenuChipPrac()
+    {
+        ChipPracComplete.SetActive(false);
+        Register.SetActive(false);
+        MainMenu.SetActive(true);
+    }
     public void PracticeAgain()
     {
         SceneManager.LoadScene("CardPrac");
@@ -244,5 +250,17 @@ public class UIManager : MonoBehaviour
         ChipsTestWelcome.SetActive(true);
         ChipNumberOfQues.text = ChipsManager.chipQuesTotal.ToString();
         ChipTimer.text = ChipsManager.saveChipTimer.ToString();
+    }
+
+    public void ChipPracticeAgain()
+    {
+        SceneManager.LoadScene("ChipPrac");
+        ChipPracComplete.SetActive(false);
+    }
+
+    public void BtnStartChipTest()
+    { 
+        StartChipTest();
+        ChipPracComplete.SetActive(false);
     }
 }

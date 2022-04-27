@@ -270,6 +270,30 @@ PrefabInstance:
       propertyPath: UnlockCardGame
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1309733108723835705, guid: 65808d3196329ac4e94eb3bf6d3203cc, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: b53ec5ab31dd69142968f50cf039105e, type: 3}
+    - target: {fileID: 1309733108723835706, guid: 65808d3196329ac4e94eb3bf6d3203cc, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1493.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1309733108723835706, guid: 65808d3196329ac4e94eb3bf6d3203cc, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 810.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1309733108723835706, guid: 65808d3196329ac4e94eb3bf6d3203cc, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 850
+      objectReference: {fileID: 0}
+    - target: {fileID: 1309733108723835706, guid: 65808d3196329ac4e94eb3bf6d3203cc, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 437.55002
+      objectReference: {fileID: 0}
+    - target: {fileID: 1309733108723835707, guid: 65808d3196329ac4e94eb3bf6d3203cc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1309733108756964552, guid: 65808d3196329ac4e94eb3bf6d3203cc, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

@@ -9,6 +9,10 @@ public class ChipsManager : MonoBehaviour
 {
     public static ChipsManager Instance { get; private set; }
 
+    public Image ProgressBarPrac;
+    public Text ChipQuesPracCorrect;
+    public Text ChipQuesPracTotal;
+
     public string chipStates = "";
     List<int> chipsQues = new List<int>();
     private int bankerBet = 0;
@@ -449,6 +453,7 @@ public class ChipsManager : MonoBehaviour
                 else
                 {
                     ResultPanel.SetActive(true);
+                    ChipResultPanelText.GetComponent<TextMeshProUGUI>().text = percent.ToString() + "%";
                     ResultPanel.transform.GetChild(2).GetChild(0).GetChild(0).GetComponent<Image>().fillAmount = a;
                     //FailTest.SetActive(false);
                 }
@@ -458,8 +463,14 @@ public class ChipsManager : MonoBehaviour
             if (playerTotal == bankerPercent)
             {
                 PracQuesCounter++;
+                ChipQuesPracCorrect.text = PracQuesCounter.ToString();
+                ChipQuesPracTotal.text = chipQuesTotal.ToString();
+
+                ProgressBarPrac.fillAmount = (float)PracQuesCounter / chipQuesTotal;
                 if (PracQuesCounter == chipQuesTotal)
                 {
+                    SceneManager.LoadScene("SampleScene");
+                    UIManager.Instance.ChipPracComplete.SetActive(true);
                     return;
                 }
                 StartCoroutine(NextGame());

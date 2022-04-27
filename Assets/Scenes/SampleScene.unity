@@ -1752,7 +1752,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1051819773}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: ShowMenuCardPrac
+        m_MethodName: ShowMenuChipPrac
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2327,7 +2327,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1051819773}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: PracticeAgain
+        m_MethodName: ChipPracticeAgain
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4539,7 +4539,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1051819773}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: StartTestPrac
+        m_MethodName: BtnStartChipTest
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
