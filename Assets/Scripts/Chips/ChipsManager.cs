@@ -9,6 +9,7 @@ public class ChipsManager : MonoBehaviour
 {
     public static ChipsManager Instance { get; private set; }
 
+    public GameObject ChipCrossImage;
     public Image ProgressBarPrac;
     public Text ChipQuesPracCorrect;
     public Text ChipQuesPracTotal;
@@ -56,8 +57,8 @@ public class ChipsManager : MonoBehaviour
     public GameObject ChipResultPanelText;
     private void Awake()
     {
-        
-        
+
+
         if (Instance != null && Instance != this)
         {
             Destroy(this);
@@ -66,7 +67,7 @@ public class ChipsManager : MonoBehaviour
         {
             Instance = this;
         }
-       LoadChipsImages();
+        LoadChipsImages();
 
         chipQuesTotal = 2;
         saveChipTimer = Timer;
@@ -76,11 +77,11 @@ public class ChipsManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
         AddBankerBet();
         ShowChipsCounts();
         BankerBet();
-        if(chipStates == "isChipTest")
+        if (chipStates == "isChipTest")
         {
             btnMainMenu.SetActive(false);
             InvokeRepeating("CountTimer", 1f, 1f);
@@ -96,7 +97,7 @@ public class ChipsManager : MonoBehaviour
     public void LoadChipsImages()
     {
         chipImgs = Resources.LoadAll<Sprite>("ChipsGraphics");
-        
+
 
     }
     public void AddBankerBet()
@@ -169,7 +170,7 @@ public class ChipsManager : MonoBehaviour
         startPos = btn5.GetComponent<RectTransform>().anchoredPosition;
         if (counter5 == 3)
         {
-            targetPos = new Vector2(897 +40, 271);
+            targetPos = new Vector2(897 + 40, 271);
         }
         else if (counter5 == 2)
         {
@@ -392,10 +393,15 @@ public class ChipsManager : MonoBehaviour
     public IEnumerator NextGame()
     {
         CancelInvoke("CountTimer");
-        
+
         yield return new WaitForSeconds(2f);
-       
-         int count = chipParent.transform.childCount;
+
+        if(chipStates != "isChipTest")
+        {
+            ChipCrossImage.SetActive(false);
+        }
+
+        int count = chipParent.transform.childCount;
         for (int i = 0; i < count; i++)
         {
             Destroy(chipParent.transform.GetChild(i).gameObject);
@@ -418,10 +424,10 @@ public class ChipsManager : MonoBehaviour
 
     public void checkResult()
     {
-        if(chipStates == "isChipTest")
+        if (chipStates == "isChipTest")
         {
             TestQuesCounter++;
-            
+
             if (playerTotal == bankerPercent)
             {
                 ChipQuesTrueCounter++;
@@ -429,14 +435,15 @@ public class ChipsManager : MonoBehaviour
             }
             else
             {
+
                 StartCoroutine(NextGame());
             }
-           
+
             ChipConfirm.SetActive(false);
             if (TestQuesCounter == chipQuesTotal)
             {
                 float a = (float)ChipQuesTrueCounter / chipQuesTotal;
-                
+
                 float percent = a * 100;
                 if (percent < 90)
                 {
@@ -458,7 +465,8 @@ public class ChipsManager : MonoBehaviour
                     //FailTest.SetActive(false);
                 }
             }
-        } else
+        }
+        else
         {
             if (playerTotal == bankerPercent)
             {
@@ -478,7 +486,9 @@ public class ChipsManager : MonoBehaviour
             }
             else
             {
+                ChipCrossImage.SetActive(true);
                 StartCoroutine(NextGame());
+
             }
             ChipConfirm.SetActive(false);
         }
@@ -487,9 +497,9 @@ public class ChipsManager : MonoBehaviour
     public void CountTimer()
     {
         txt_Timer.text = Timer.ToString();
-       if (chipStates == "isChipTest")
+        if (chipStates == "isChipTest")
         {
-            if(Timer <= 0)
+            if (Timer <= 0)
             {
                 CancelInvoke("CountTimer");
                 StartCoroutine(NextGame());

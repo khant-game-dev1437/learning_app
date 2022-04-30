@@ -170,6 +170,8 @@ public class UIManager : MonoBehaviour
     {
         Register.SetActive(false);
         MainMenu.SetActive(true);
+        //MenuCategories.SetActive(true);
+        //Debug.Log("WTF");
     }
     public void ShowCardVideos()
     {
@@ -251,7 +253,12 @@ public class UIManager : MonoBehaviour
         ChipNumberOfQues.text = ChipsManager.chipQuesTotal.ToString();
         ChipTimer.text = ChipsManager.saveChipTimer.ToString();
     }
-
+    
+    public void HideChipTestPanel()
+    {
+        ChipsTestWelcome.SetActive(false);
+        MenuCategories.SetActive(true);
+    }
     public void ChipPracticeAgain()
     {
         SceneManager.LoadScene("ChipPrac");

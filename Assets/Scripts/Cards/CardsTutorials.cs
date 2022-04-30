@@ -23,6 +23,11 @@ public class CardsTutorials : MonoBehaviour, IDragHandler, IPointerDownHandler
     [SerializeField]
     private GameObject MenuCategories;
 
+    public GameObject BtnPlay;
+    public GameObject BtnPause;
+    public GameObject ParentPlayOrPuase;
+
+
     private void Awake()
     {
         LoadAllCardVideos();
@@ -98,6 +103,7 @@ public class CardsTutorials : MonoBehaviour, IDragHandler, IPointerDownHandler
             VideosCounter = cardVideos.Count - 1;
             VideoTex.GetComponent<VideoPlayer>().Pause();
             FinishedPanel.SetActive(true);
+            ParentPlayOrPuase.SetActive(false);
         }
 
         PlayVideo();
@@ -126,7 +132,6 @@ public class CardsTutorials : MonoBehaviour, IDragHandler, IPointerDownHandler
         FinishedPanel.SetActive(false);
         UIManager.Instance.MainMenu.SetActive(true);
         MenuCategories.SetActive(true);
-        Debug.Log(";lakjsd;lfja  " + MenuCategories.activeInHierarchy);
         gameObject.SetActive(false);
     }
 
@@ -136,5 +141,20 @@ public class CardsTutorials : MonoBehaviour, IDragHandler, IPointerDownHandler
         FinishedPanel.SetActive(false);
         SkipToPercent(0f);
         VideoTex.Play();
+        ParentPlayOrPuase.SetActive(true);
+    }
+
+    public void UnpauseVideo()
+    {
+        BtnPlay.SetActive(false);
+        BtnPause.SetActive(true);
+        VideoTex.Play();
+    }
+
+    public void PauseVideo()
+    {
+        BtnPlay.SetActive(true);
+        BtnPause.SetActive(false);
+        VideoTex.Pause();
     }
 }

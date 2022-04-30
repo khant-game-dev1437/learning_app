@@ -11,7 +11,7 @@ public class CardsManager : MonoBehaviour
     public static CardsManager Instance { get; private set; }
 
     //UI
-
+    public Button btnRedo;
     public Button btnQuit;
     public Button btnBankerThird;
     public Button btnPlayerThird;
@@ -130,7 +130,10 @@ public class CardsManager : MonoBehaviour
 
     void Start()
     {
-
+        if(cardStates == "isCardTest")
+        {
+            btnRedo.gameObject.SetActive(true);
+        }
         btnQuit.onClick.AddListener(QuitGame);
         cardTimer_Txt.gameObject.SetActive(false);
         imgCross.SetActive(false);
