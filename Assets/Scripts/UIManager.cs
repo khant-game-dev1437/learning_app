@@ -9,7 +9,10 @@ public class UIManager : MonoBehaviour
 {
 
     public static UIManager Instance { get; private set; }
-    
+
+    public GameObject backgroundImg;
+    public GameObject ModuleImg;
+
     // Register GameObject
     public GameObject Register;
     public InputField Name_Input;
@@ -48,6 +51,8 @@ public class UIManager : MonoBehaviour
     public GameObject ChipsPracWelcome;
     public GameObject ChipsTestWelcome;
     public GameObject ChipPracComplete;
+
+    
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -78,7 +83,7 @@ public class UIManager : MonoBehaviour
         SceneManager.LoadScene("CardPrac");
         yield return new WaitForSeconds(0.1f);
         CardPracWelcome.SetActive(false);
-
+        ModuleImg.SetActive(false);
         //MainMenu.transform.GetChild(3).gameObject.SetActive(true);
         //CardRulePracPanel.SetActive(false);
     }
@@ -95,6 +100,7 @@ public class UIManager : MonoBehaviour
         SceneManager.LoadScene("SampleScene");
 
         StartCoroutine(DelayTestPanel());
+        
     }
 
     
@@ -105,6 +111,7 @@ public class UIManager : MonoBehaviour
         CardTestPanel.SetActive(true);
         NumberOfQues.text = CardsManager.cardQuesTotal.ToString();
         Timer.text = CardsManager.saveTimer.ToString();
+        ModuleImg.SetActive(false);
     }
 
     public void StartTest()
@@ -134,6 +141,7 @@ public class UIManager : MonoBehaviour
         yield return new WaitForSeconds(3f);
         CardRulePanel.SetActive(false);
         ShowCardVideos();
+        ModuleImg.SetActive(false);
     }
     public void CloseAllUI()
     {
@@ -152,6 +160,9 @@ public class UIManager : MonoBehaviour
         CardRulePracPanel.SetActive(false);
         Register.SetActive(false);
         MainMenu.SetActive(true);
+        MenuCategories.SetActive(true);
+        Cards.SetActive(false);
+        Chips.SetActive(false);
     }
 
     public void ShowMenuChipPrac()
@@ -159,6 +170,8 @@ public class UIManager : MonoBehaviour
         ChipPracComplete.SetActive(false);
         Register.SetActive(false);
         MainMenu.SetActive(true);
+        MenuCategories.SetActive(true);
+        backgroundImg.SetActive(true);
     }
     public void PracticeAgain()
     {
@@ -170,9 +183,12 @@ public class UIManager : MonoBehaviour
     {
         Register.SetActive(false);
         MainMenu.SetActive(true);
-        //MenuCategories.SetActive(true);
-        //Debug.Log("WTF");
+        MenuCategories.SetActive(true);
+        Cards.SetActive(false);
+        Chips.SetActive(false);
+        backgroundImg.SetActive(true);
     }
+
     public void ShowCardVideos()
     {
         CardVideos.SetActive(true);
@@ -192,7 +208,8 @@ public class UIManager : MonoBehaviour
         Chips.SetActive(false);
         OverAll.SetActive(false);
         MenuCategories.SetActive(false);
-        Debug.Log("CLick BTNS");
+        ModuleImg.SetActive(true);
+        backgroundImg.SetActive(false);
     }
 
     public void ClickBtnChips()
@@ -201,6 +218,8 @@ public class UIManager : MonoBehaviour
         Cards.SetActive(false);
         OverAll.SetActive(false);
         MenuCategories.SetActive(false);
+        ModuleImg.SetActive(true);
+        backgroundImg.SetActive(false);
     }
 
     public void ClickBtnOverAll()
@@ -219,6 +238,7 @@ public class UIManager : MonoBehaviour
         Cards.SetActive(false);
         Chips.SetActive(false);
         MenuCategories.SetActive(false);
+        ModuleImg.SetActive(false);
     }
 
     public void ClickBtnChipTest()

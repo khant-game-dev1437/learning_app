@@ -9,10 +9,13 @@ public class ChipsManager : MonoBehaviour
 {
     public static ChipsManager Instance { get; private set; }
 
+    public GameObject FailPanel;
+    public GameObject CorrectImage;
     public GameObject ChipCrossImage;
     public Image ProgressBarPrac;
     public Text ChipQuesPracCorrect;
     public Text ChipQuesPracTotal;
+    public GameObject FailChipText;
 
     public string chipStates = "";
     List<int> chipsQues = new List<int>();
@@ -390,6 +393,14 @@ public class ChipsManager : MonoBehaviour
         }
     }
 
+    public IEnumerator ShowCorrectImage()
+    {
+        CorrectImage.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        CorrectImage.SetActive(false);
+        StartCoroutine(NextGame());
+    }
+
     public IEnumerator NextGame()
     {
         CancelInvoke("CountTimer");
@@ -431,7 +442,7 @@ public class ChipsManager : MonoBehaviour
             if (playerTotal == bankerPercent)
             {
                 ChipQuesTrueCounter++;
-                StartCoroutine(NextGame());
+                StartCoroutine(ShowCorrectImage());
             }
             else
             {
@@ -447,14 +458,10 @@ public class ChipsManager : MonoBehaviour
                 float percent = a * 100;
                 if (percent < 90)
                 {
-                    Debug.Log("A Min May Loe" + a);
-                    //FailTest.SetActive(true);
-                    //FailTest.transform.GetChild(2).GetChild(0).GetChild(0).GetComponent<Image>().fillAmount = a;
-                    //FailTest.transform.GetChild(2).GetChild(1).GetComponent<TextMeshProUGUI>().text = percent.ToString() + "%";
-                    //ResultPanel.SetActive(false);
-                    ResultPanel.SetActive(true);
-                    ChipResultPanelText.GetComponent<TextMeshProUGUI>().text = percent.ToString() + "%";
-                    ResultPanel.transform.GetChild(2).GetChild(0).GetChild(0).GetComponent<Image>().fillAmount = a;
+                    
+                    FailPanel.SetActive(true);
+                    FailChipText.GetComponent<TextMeshProUGUI>().text = percent.ToString() + "%";
+                    FailPanel.transform.GetChild(2).GetChild(0).GetChild(0).GetComponent<Image>().fillAmount = a;
                     return;
                 }
                 else
@@ -519,5 +526,12 @@ public class ChipsManager : MonoBehaviour
         UIManager.Instance.Cards.SetActive(false);
         UIManager.Instance.Chips.SetActive(false);
         UIManager.Instance.OverAll.SetActive(false);
+        UIManager.Instance.backgroundImg.SetActive(true);
+    }
+
+    public void Redo()
+    {
+        SceneManager.LoadScene("SampleScene");
+        UIManager.Instance.ChipsTestWelcome.SetActive(true);
     }
 }

@@ -133,6 +133,9 @@ public class CardsTutorials : MonoBehaviour, IDragHandler, IPointerDownHandler
         UIManager.Instance.MainMenu.SetActive(true);
         MenuCategories.SetActive(true);
         gameObject.SetActive(false);
+        UIManager.Instance.MenuCategories.SetActive(true);
+        UIManager.Instance.Cards.SetActive(false);
+        UIManager.Instance.Chips.SetActive(false);
     }
 
     public void TutoAgain()

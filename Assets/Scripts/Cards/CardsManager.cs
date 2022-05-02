@@ -165,7 +165,10 @@ public class CardsManager : MonoBehaviour
         UIManager.Instance.Register.SetActive(false);
         UIManager.Instance.MainMenu.SetActive(true);
         UIManager.Instance.CardRulePracPanel.SetActive(false);
-        UIManager.Instance.MainMenu.transform.GetChild(3).gameObject.SetActive(true);
+        UIManager.Instance.MenuCategories.SetActive(true);
+        UIManager.Instance.Cards.SetActive(false);
+        UIManager.Instance.Chips.SetActive(false);
+        UIManager.Instance.backgroundImg.SetActive(true);
     }
 
     public void DisableCardBtns()
@@ -1526,5 +1529,11 @@ public class CardsManager : MonoBehaviour
             StartCoroutine("NextGameAfterTimerWrong");
             DisableCardBtns();
         }
+    }
+
+    public void Redo()
+    {
+        SceneManager.LoadScene("SampleScene");
+        UIManager.Instance.CardTestPanel.SetActive(true);
     }
 }
