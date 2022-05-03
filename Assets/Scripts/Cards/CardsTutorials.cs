@@ -77,9 +77,9 @@ public class CardsTutorials : MonoBehaviour, IDragHandler, IPointerDownHandler
     private void LoadAllCardVideos()
     {
         cardTutos = Resources.LoadAll<VideoClip>("CardTutorialsVideos");
-        Debug.Log("cardTutos " + cardTutos.Length);
-        cardVideos.Add("COD");
-        cardVideos.Add("Circles");
+        cardVideos.Add("CardTutorial1");
+        cardVideos.Add("CardTutorial2");
+        cardVideos.Add("CardTutorial3");
     }
 
     public void PlayVideo()
@@ -136,6 +136,7 @@ public class CardsTutorials : MonoBehaviour, IDragHandler, IPointerDownHandler
         UIManager.Instance.MenuCategories.SetActive(true);
         UIManager.Instance.Cards.SetActive(false);
         UIManager.Instance.Chips.SetActive(false);
+        UIManager.Instance.backgroundImg.SetActive(true);
     }
 
     public void TutoAgain()
