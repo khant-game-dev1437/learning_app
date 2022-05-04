@@ -17,6 +17,9 @@ public class ChipsManager : MonoBehaviour
     public Text ChipQuesPracTotal;
     public GameObject FailChipText;
 
+    public Text ChipTestQuesCounter;
+    public Text ChipTestQuesTotal;
+
     public string chipStates = "";
     List<int> chipsQues = new List<int>();
     private int bankerBet = 0;
@@ -58,6 +61,9 @@ public class ChipsManager : MonoBehaviour
     public Text txt_playerTotal;
     public Text txt_Timer;
     public GameObject ChipResultPanelText;
+
+    public GameObject ChipTestProgressBar;
+
     private void Awake()
     {
 
@@ -407,10 +413,9 @@ public class ChipsManager : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
 
-        if(chipStates != "isChipTest")
-        {
-            ChipCrossImage.SetActive(false);
-        }
+        CorrectImage.SetActive(false);
+        ChipCrossImage.SetActive(false);
+        
 
         int count = chipParent.transform.childCount;
         for (int i = 0; i < count; i++)
@@ -438,15 +443,18 @@ public class ChipsManager : MonoBehaviour
         if (chipStates == "isChipTest")
         {
             TestQuesCounter++;
-
+            ChipTestQuesCounter.text = TestQuesCounter.ToString();
+            ChipTestQuesTotal.text = chipQuesTotal.ToString();
+            ChipTestProgressBar.GetComponent<Image>().fillAmount = (float)TestQuesCounter / chipQuesTotal;
             if (playerTotal == bankerPercent)
             {
+                CorrectImage.SetActive(true);
                 ChipQuesTrueCounter++;
                 StartCoroutine(ShowCorrectImage());
             }
             else
             {
-
+                ChipCrossImage.SetActive(true);
                 StartCoroutine(NextGame());
             }
 
@@ -477,6 +485,7 @@ public class ChipsManager : MonoBehaviour
         {
             if (playerTotal == bankerPercent)
             {
+                CorrectImage.SetActive(true);
                 PracQuesCounter++;
                 ChipQuesPracCorrect.text = PracQuesCounter.ToString();
                 ChipQuesPracTotal.text = chipQuesTotal.ToString();

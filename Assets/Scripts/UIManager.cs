@@ -91,6 +91,7 @@ public class UIManager : MonoBehaviour
     public void HideCardTestPanel()
     {
         CardTestPanel.SetActive(false);
+        CardRulePracPanel.SetActive(false);
         ShowMenu();
     }
 
@@ -163,6 +164,7 @@ public class UIManager : MonoBehaviour
         MenuCategories.SetActive(true);
         Cards.SetActive(false);
         Chips.SetActive(false);
+        backgroundImg.SetActive(true);
     }
 
     public void ShowMenuChipPrac()
@@ -278,6 +280,9 @@ public class UIManager : MonoBehaviour
     {
         ChipsTestWelcome.SetActive(false);
         MenuCategories.SetActive(true);
+        ModuleImg.SetActive(false);
+        backgroundImg.SetActive(true);
+        Chips.SetActive(false);
     }
     public void ChipPracticeAgain()
     {
