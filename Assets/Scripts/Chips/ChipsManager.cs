@@ -63,7 +63,7 @@ public class ChipsManager : MonoBehaviour
     public GameObject ChipResultPanelText;
 
     public GameObject ChipTestProgressBar;
-
+    public GameObject ClearBtn;
     private void Awake()
     {
 
@@ -435,6 +435,7 @@ public class ChipsManager : MonoBehaviour
         ShowChipsCounts();
         BankerBet();
         ChipConfirm.SetActive(true);
+        ClearBtn.SetActive(true);
         InvokeRepeating("CountTimer", 1f, 1f);
     }
 
@@ -507,6 +508,7 @@ public class ChipsManager : MonoBehaviour
 
             }
             ChipConfirm.SetActive(false);
+            ClearBtn.SetActive(false);
         }
     }
 
@@ -542,5 +544,25 @@ public class ChipsManager : MonoBehaviour
     {
         SceneManager.LoadScene("SampleScene");
         UIManager.Instance.ChipsTestWelcome.SetActive(true);
+    }
+
+    public void ClearChips()
+    {
+        for(int i = 0; i < chipParent.childCount; i++)
+        {
+            if(chipParent.childCount > 0)
+            {
+                Debug.Log("sapat");
+                Destroy(chipParent.GetChild(i).gameObject);
+            }
+        }
+        counter5 = 4;
+        counter25 = 3;
+        counter100 = 4;
+        counter500 = 1;
+        counter1000 = 4;
+        counter5000 = 4;
+        playerTotal = 0;
+        ShowChipsCounts();
     }
 }

@@ -27,6 +27,9 @@ public class CardsTutorials : MonoBehaviour, IDragHandler, IPointerDownHandler
     public GameObject BtnPause;
     public GameObject ParentPlayOrPuase;
 
+    public Text VideosTotal;
+    public Text CounterVideos;
+    public Text Slash;
 
     private void Awake()
     {
@@ -36,7 +39,9 @@ public class CardsTutorials : MonoBehaviour, IDragHandler, IPointerDownHandler
 
     void Start()
     {
-        //PlayVideo();
+        
+        VideosTotal.text = cardVideos.Count.ToString();
+        CounterVideos.text = (VideosCounter+1).ToString();
     }
 
 
@@ -99,13 +104,15 @@ public class CardsTutorials : MonoBehaviour, IDragHandler, IPointerDownHandler
         VideosCounter++;
         if (VideosCounter > cardVideos.Count - 1)
         {
-
             VideosCounter = cardVideos.Count - 1;
             VideoTex.GetComponent<VideoPlayer>().Pause();
             FinishedPanel.SetActive(true);
             ParentPlayOrPuase.SetActive(false);
+            CounterVideos.gameObject.SetActive(false);
+            VideosTotal.gameObject.SetActive(false);
+            Slash.gameObject.SetActive(false);
         }
-
+        CounterVideos.text = (VideosCounter + 1).ToString();
         PlayVideo();
     }
 
@@ -116,7 +123,7 @@ public class CardsTutorials : MonoBehaviour, IDragHandler, IPointerDownHandler
         {
             VideosCounter = 0;
         }
-
+        CounterVideos.text = (VideosCounter + 1).ToString();
         PlayVideo();
     }
 
@@ -141,11 +148,20 @@ public class CardsTutorials : MonoBehaviour, IDragHandler, IPointerDownHandler
 
     public void TutoAgain()
     {
+        VideosCounter = 0;
+        PlayVideo();
+        CounterVideos.text = (VideosCounter + 1).ToString();
         UIManager.Instance.MainMenu.SetActive(false);
         FinishedPanel.SetActive(false);
         SkipToPercent(0f);
         VideoTex.Play();
         ParentPlayOrPuase.SetActive(true);
+        
+        CounterVideos.gameObject.SetActive(true);
+        Slash.gameObject.SetActive(true);
+        VideosTotal.gameObject.SetActive(true);
+        
+        VideosTotal.text = cardVideos.Count.ToString();
     }
 
     public void UnpauseVideo()
