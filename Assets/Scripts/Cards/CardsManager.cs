@@ -70,7 +70,9 @@ public class CardsManager : MonoBehaviour
     private int beforePlayerTotal = 0;
     public int timer = 0;
 
+    [HideInInspector]
     public int counter = 0;
+    [HideInInspector]
     public int bankerCounter = 0;
 
     [HideInInspector]

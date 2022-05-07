@@ -8,6 +8,8 @@ using UnityEngine.SceneManagement;
 
 public class CardsTutorials : MonoBehaviour, IDragHandler, IPointerDownHandler
 {
+
+    public static CardsTutorials Instance { get; private set; }
     [SerializeField]
     public VideoPlayer VideoTex;
     public Image progressBar;
@@ -33,6 +35,14 @@ public class CardsTutorials : MonoBehaviour, IDragHandler, IPointerDownHandler
 
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
         LoadAllCardVideos();
     }
 

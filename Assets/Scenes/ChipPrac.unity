@@ -1012,6 +1012,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4809940703882133287, guid: bf4056ca92873f54691c97bd6b0d49cc, type: 3}
+      propertyPath: Timer
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 4809940703882133287, guid: bf4056ca92873f54691c97bd6b0d49cc, type: 3}
       propertyPath: chipStates
       value: 
       objectReference: {fileID: 0}
@@ -1019,6 +1023,10 @@ PrefabInstance:
       propertyPath: CorrectImage
       value: 
       objectReference: {fileID: 544376173}
+    - target: {fileID: 4809940703882133287, guid: bf4056ca92873f54691c97bd6b0d49cc, type: 3}
+      propertyPath: ChipQuesTotal
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4809940703882133287, guid: bf4056ca92873f54691c97bd6b0d49cc, type: 3}
       propertyPath: ChipCrossImage
       value: 

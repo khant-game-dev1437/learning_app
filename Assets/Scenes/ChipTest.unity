@@ -1755,6 +1755,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4809940703882133287, guid: bf4056ca92873f54691c97bd6b0d49cc, type: 3}
+      propertyPath: Timer
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 4809940703882133287, guid: bf4056ca92873f54691c97bd6b0d49cc, type: 3}
       propertyPath: FailPanel
       value: 
       objectReference: {fileID: 1723398996}
@@ -1770,6 +1774,10 @@ PrefabInstance:
       propertyPath: FailChipText
       value: 
       objectReference: {fileID: 630301302}
+    - target: {fileID: 4809940703882133287, guid: bf4056ca92873f54691c97bd6b0d49cc, type: 3}
+      propertyPath: ChipQuesTotal
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 4809940703882133287, guid: bf4056ca92873f54691c97bd6b0d49cc, type: 3}
       propertyPath: ChipCrossImage
       value: 

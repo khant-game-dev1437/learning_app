@@ -37,6 +37,10 @@ public class UIManager : MonoBehaviour
     public Button CardTutorial;
     public GameObject CardVideos;
 
+
+    public Button ChipTutorial;
+    public GameObject ChipVideos;
+
     public GameObject CardRulePanel;
     public GameObject CardRulePracPanel;
     public GameObject CardPracWelcome;
@@ -74,6 +78,7 @@ public class UIManager : MonoBehaviour
         MainMenu.SetActive(false);
         //StartCoroutine(ActiveCardButtons());
         CardTutorial.onClick.AddListener(delegate { StartCoroutine(ShowCardRulePanel()); });
+        ChipTutorial.onClick.AddListener(ShowChipPanel);
     }
 
     public IEnumerator ShowCardRulePracPanel()
@@ -140,10 +145,20 @@ public class UIManager : MonoBehaviour
     {
         CardRulePanel.SetActive(true);
         yield return new WaitForSeconds(3f);
+        
         CardRulePanel.SetActive(false);
         ShowCardVideos();
         ModuleImg.SetActive(false);
+        CardsTutorials.Instance.TutoAgain();
     }
+
+    public void ShowChipPanel()
+    {
+        ShowChipVideos();
+        ModuleImg.SetActive(false);
+        ChipsTutorial.Instance.TutoAgain();
+    }
+
     public void CloseAllUI()
     {
         Register.SetActive(false);
@@ -181,6 +196,12 @@ public class UIManager : MonoBehaviour
         CardRulePracPanel.SetActive(false);
     }
 
+    public void ShowBtnChipTutorialMainMenu()
+    {
+        ChipVideos.SetActive(false);
+        ShowMenu();
+    }
+
     public void ShowMenu()
     {
         Register.SetActive(false);
@@ -194,6 +215,12 @@ public class UIManager : MonoBehaviour
     public void ShowCardVideos()
     {
         CardVideos.SetActive(true);
+        MainMenu.SetActive(false);
+    }
+
+    public void ShowChipVideos()
+    {
+        ChipVideos.SetActive(true);
         MainMenu.SetActive(false);
     }
 

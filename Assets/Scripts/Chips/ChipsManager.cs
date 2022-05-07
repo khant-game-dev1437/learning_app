@@ -35,8 +35,10 @@ public class ChipsManager : MonoBehaviour
     private int counter5000 = 4;
     private int TestQuesCounter = 0;
     private int PracQuesCounter = 0;
-    private int Timer = 30;
+    
     private int ChipQuesTrueCounter = 0;
+    public int Timer = 0;
+    public int ChipQuesTotal = 0;
 
     public static int chipQuesTotal;
     public static int saveChipTimer;
@@ -78,7 +80,7 @@ public class ChipsManager : MonoBehaviour
         }
         LoadChipsImages();
 
-        chipQuesTotal = 2;
+        chipQuesTotal = ChipQuesTotal;
         saveChipTimer = Timer;
 
     }
@@ -431,7 +433,7 @@ public class ChipsManager : MonoBehaviour
         bankerBet = 0;
         bankerPercent = 0;
         playerTotal = 0;
-        Timer = 30;
+        Timer = saveChipTimer;
         ShowChipsCounts();
         BankerBet();
         ChipConfirm.SetActive(true);
