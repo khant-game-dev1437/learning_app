@@ -92,9 +92,38 @@ public class CardsTutorials : MonoBehaviour, IDragHandler, IPointerDownHandler
     private void LoadAllCardVideos()
     {
         cardTutos = Resources.LoadAll<VideoClip>("CardTutorialsVideos");
-        cardVideos.Add("CardTutorial1");
-        cardVideos.Add("CardTutorial2");
-        cardVideos.Add("CardTutorial3");
+        cardVideos.Add("Card1");
+        cardVideos.Add("Card2");
+        cardVideos.Add("Card3");
+        cardVideos.Add("Card4");
+        cardVideos.Add("Card5");
+        cardVideos.Add("Card6");
+        cardVideos.Add("Card7");
+        cardVideos.Add("Card8");
+        cardVideos.Add("Card9");
+        cardVideos.Add("Card10");
+        cardVideos.Add("Card11");
+        cardVideos.Add("Card12");
+        cardVideos.Add("Card13");
+        cardVideos.Add("Card14");
+        cardVideos.Add("Card15");
+        cardVideos.Add("Card16");
+        cardVideos.Add("Card17");
+        cardVideos.Add("Card18");
+        cardVideos.Add("Card19");
+        cardVideos.Add("Card20");
+        cardVideos.Add("Card21");
+        cardVideos.Add("Card22");
+        cardVideos.Add("Card23");
+        cardVideos.Add("Card24");
+        cardVideos.Add("Card25");
+        cardVideos.Add("Card26");
+        cardVideos.Add("Card27");
+        cardVideos.Add("Card28");
+        cardVideos.Add("Card29");
+        cardVideos.Add("Card30");
+        cardVideos.Add("Card31");
+
     }
 
     public void PlayVideo()

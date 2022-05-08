@@ -93,9 +93,18 @@ public class ChipsTutorial : MonoBehaviour, IDragHandler, IPointerDownHandler
     private void LoadAllChipVideos()
     {
         chipTutos = Resources.LoadAll<VideoClip>("ChipTutorial");
-        chipVideos.Add("ChipTutorial1");
-        chipVideos.Add("ChipTutorial2");
-        //chipVideos.Add("CardTutorial3");
+        chipVideos.Add("1");
+        chipVideos.Add("2");
+        chipVideos.Add("3");
+        chipVideos.Add("4");
+        chipVideos.Add("5");
+        chipVideos.Add("6");
+        chipVideos.Add("7");
+        chipVideos.Add("8");
+        chipVideos.Add("9");
+        chipVideos.Add("10");
+        chipVideos.Add("11");
+        chipVideos.Add("12");
     }
 
     public void PlayVideo()

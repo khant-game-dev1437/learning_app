@@ -133,6 +133,7 @@ public class ChipsManager : MonoBehaviour
         chipsQues.Add(17200);
         chipsQues.Add(18700);
         chipsQues.Add(26000);
+        
     }
 
     public void ShowChipsCounts()
