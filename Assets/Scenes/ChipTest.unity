@@ -1776,7 +1776,7 @@ PrefabInstance:
       objectReference: {fileID: 630301302}
     - target: {fileID: 4809940703882133287, guid: bf4056ca92873f54691c97bd6b0d49cc, type: 3}
       propertyPath: ChipQuesTotal
-      value: 10
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4809940703882133287, guid: bf4056ca92873f54691c97bd6b0d49cc, type: 3}
       propertyPath: ChipCrossImage
