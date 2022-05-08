@@ -9,6 +9,8 @@ public class ChipsManager : MonoBehaviour
 {
     public static ChipsManager Instance { get; private set; }
 
+    public GameObject RedoBtn;
+
     public GameObject FailPanel;
     public GameObject CorrectImage;
     public GameObject ChipCrossImage;
@@ -413,11 +415,12 @@ public class ChipsManager : MonoBehaviour
     public IEnumerator NextGame()
     {
         CancelInvoke("CountTimer");
-
+        
         yield return new WaitForSeconds(2f);
 
         CorrectImage.SetActive(false);
         ChipCrossImage.SetActive(false);
+        
         
 
         int count = chipParent.transform.childCount;
@@ -478,10 +481,14 @@ public class ChipsManager : MonoBehaviour
                 }
                 else
                 {
+                    ClearBtn.SetActive(false);
+                    ChipTestProgressBar.SetActive(false);
+                    RedoBtn.SetActive(false);
                     ResultPanel.SetActive(true);
                     ChipResultPanelText.GetComponent<TextMeshProUGUI>().text = percent.ToString() + "%";
                     ResultPanel.transform.GetChild(2).GetChild(0).GetChild(0).GetComponent<Image>().fillAmount = a;
                     //FailTest.SetActive(false);
+                    return;
                 }
             }
         }
