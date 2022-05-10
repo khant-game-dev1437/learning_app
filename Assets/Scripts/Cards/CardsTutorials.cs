@@ -118,11 +118,7 @@ public class CardsTutorials : MonoBehaviour, IDragHandler, IPointerDownHandler
         cardVideos.Add("Card24");
         cardVideos.Add("Card25");
         cardVideos.Add("Card26");
-        cardVideos.Add("Card27");
-        cardVideos.Add("Card28");
-        cardVideos.Add("Card29");
-        cardVideos.Add("Card30");
-        cardVideos.Add("Card31");
+      
 
     }
 
