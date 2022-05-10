@@ -543,6 +543,7 @@ public class ChipsManager : MonoBehaviour
     public void BackToMainMenu()
     {
         SceneManager.LoadScene("SampleScene");
+        UIManager.Instance.MainMenu.SetActive(true);
         UIManager.Instance.MenuCategories.SetActive(true);
         UIManager.Instance.Cards.SetActive(false);
         UIManager.Instance.Chips.SetActive(false);
